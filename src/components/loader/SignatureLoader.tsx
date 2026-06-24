@@ -10,31 +10,38 @@ interface SignatureLoaderProps {
 
 export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
   const [phase, setPhase] = useState<"signature" | "welcome" | "done">("signature");
+  const [isMobile, setIsMobile] = useState(false);
 
   // Stable callback ref
   const handleComplete = useCallback(onComplete, [onComplete]);
 
   useEffect(() => {
+    setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
+  useEffect(() => {
     // Lock scroll while loading
     document.body.style.overflow = "hidden";
     
+    // Mobile: much shorter durations to improve FCP/LCP on slow devices
+    const signatureDuration = isMobile ? 600 : 1200;
+    const welcomeDuration = isMobile ? 300 : 600;
+
     if (phase === "signature") {
-      // Drastically reduced from 3.2s to 1.2s to improve FCP
-      const t = setTimeout(() => setPhase("welcome"), 1200);
+      const t = setTimeout(() => setPhase("welcome"), signatureDuration);
       return () => clearTimeout(t);
     }
     if (phase === "welcome") {
-      const t = setTimeout(() => setPhase("done"), 600);
+      const t = setTimeout(() => setPhase("done"), welcomeDuration);
       return () => clearTimeout(t);
     }
     if (phase === "done") {
-      document.body.style.overflow = ""; // Unlock scroll
+      document.body.style.overflow = "";
       handleComplete();
     }
     
-    // Cleanup on unmount just in case
     return () => { document.body.style.overflow = ""; };
-  }, [phase, handleComplete]);
+  }, [phase, handleComplete, isMobile]);
 
   return (
     <motion.div
@@ -49,15 +56,25 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
       />
 
-      {/* Ambient Pulsing Glow */}
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.15, 0.25, 0.15],
-        }}
-        transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[40vh] bg-accent-violet/30 blur-[120px] rounded-[100%] pointer-events-none z-0"
-      />
+      {/* Ambient Pulsing Glow — desktop only, too heavy for mobile GPUs */}
+      {!isMobile && (
+        <motion.div
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.15, 0.25, 0.15],
+          }}
+          transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[40vh] rounded-[100%] pointer-events-none z-0"
+          style={{ background: 'radial-gradient(ellipse, rgba(139,92,246,0.3) 0%, transparent 70%)' }}
+        />
+      )}
+      {/* Static glow for mobile */}
+      {isMobile && (
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[40vh] rounded-[100%] pointer-events-none z-0 opacity-20"
+          style={{ background: 'radial-gradient(ellipse, rgba(139,92,246,0.4) 0%, transparent 70%)' }}
+        />
+      )}
 
       {/* Signature Draw */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-8">

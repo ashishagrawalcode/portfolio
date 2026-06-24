@@ -25,10 +25,12 @@ const skills = [
   { id: "python", name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg", color: "rgba(55,118,171,0.15)", radius: 50 },
 ];
 
-export const TechOrbs = () => {
+
+
+// ─── Physics engine (all devices) ──────────────────────────────────────────────
+const TechOrbsPhysics = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Physics State
+
   const orbsRef = useRef<{
     id: string;
     x: number;
@@ -40,7 +42,6 @@ export const TechOrbs = () => {
     element: HTMLDivElement | null;
   }[]>([]);
 
-  // Drag interaction state
   const dragState = useRef({
     activeId: null as string | null,
     lastMouseX: 0,
@@ -54,38 +55,32 @@ export const TechOrbs = () => {
 
   useEffect(() => {
     setIsClient(true);
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    const mobile = window.matchMedia("(pointer: coarse)").matches;
+    setIsMobile(mobile);
   }, []);
 
   useEffect(() => {
     if (!containerRef.current) return;
-    
+
     const container = containerRef.current;
     const width = container.clientWidth;
     const height = container.clientHeight;
+    // Orbs are 65% size on mobile to fit smaller screens
+    const scale = isMobile ? 0.65 : 1;
 
-    // Initialize physics bodies
     if (orbsRef.current.length === 0) {
       orbsRef.current = skills.map((skill, index) => {
-        const actualRadius = isMobile ? skill.radius * 0.8 : skill.radius; // Slightly bigger on mobile than 0.7
-        // Start in center with slight spread
         const x = width / 2 + (Math.random() - 0.5) * 100;
         const y = height / 2 + (Math.random() - 0.5) * 100;
-        
-        // Initial gentle explosion
         const angle = (index / skills.length) * Math.PI * 2;
-        const speed = Math.random() * 2 + 1; // Slower, elegant initial speed
-        
+        const speed = Math.random() * 2 + 1;
         return {
           id: skill.id,
           x,
           y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          radius: actualRadius,
+          radius: skill.radius * scale,
           isDragging: false,
           element: null,
         };
@@ -98,66 +93,40 @@ export const TechOrbs = () => {
       const orbs = orbsRef.current;
       const w = container.clientWidth;
       const h = container.clientHeight;
-      const friction = 1.0; // Perfect vacuum (no air resistance)
-      const restitution = 1.0; // Perfectly elastic collisions
+      const restitution = 1.0;
 
-      // 1. Move Orbs & Apply Friction
       for (let i = 0; i < orbs.length; i++) {
         const orb = orbs[i];
         if (orb.isDragging) continue;
-
-        // Add a gentle nudge if the orb slows down too much, keeping them flowing
         const currentSpeed = Math.hypot(orb.vx, orb.vy);
         if (currentSpeed < 0.5) {
           orb.vx += (Math.random() - 0.5) * 0.1;
           orb.vy += (Math.random() - 0.5) * 0.1;
         }
-
-        // Cap max speed so they don't go crazy over time
         if (currentSpeed > 3) {
           orb.vx = (orb.vx / currentSpeed) * 3;
           orb.vy = (orb.vy / currentSpeed) * 3;
         }
-
         orb.x += orb.vx;
         orb.y += orb.vy;
-
-        // Wall Collisions
-        if (orb.x - orb.radius < 0) {
-          orb.x = orb.radius;
-          orb.vx *= -restitution;
-        } else if (orb.x + orb.radius > w) {
-          orb.x = w - orb.radius;
-          orb.vx *= -restitution;
-        }
-
-        if (orb.y - orb.radius < 0) {
-          orb.y = orb.radius;
-          orb.vy *= -restitution;
-        } else if (orb.y + orb.radius > h) {
-          orb.y = h - orb.radius;
-          orb.vy *= -restitution;
-        }
+        if (orb.x - orb.radius < 0) { orb.x = orb.radius; orb.vx *= -restitution; }
+        else if (orb.x + orb.radius > w) { orb.x = w - orb.radius; orb.vx *= -restitution; }
+        if (orb.y - orb.radius < 0) { orb.y = orb.radius; orb.vy *= -restitution; }
+        else if (orb.y + orb.radius > h) { orb.y = h - orb.radius; orb.vy *= -restitution; }
       }
 
-      // 2. Rigid-Body Collisions (Circle-Circle)
       for (let i = 0; i < orbs.length; i++) {
         for (let j = i + 1; j < orbs.length; j++) {
           const o1 = orbs[i];
           const o2 = orbs[j];
-
           const dx = o2.x - o1.x;
           const dy = o2.y - o1.y;
           const dist = Math.hypot(dx, dy);
           const minDist = o1.radius + o2.radius;
-
           if (dist < minDist && dist > 0) {
-            // Overlap resolution (push apart)
             const overlap = minDist - dist;
             const nx = dx / dist;
             const ny = dy / dist;
-
-            // Move each away by half the overlap, unless one is being dragged
             if (!o1.isDragging && !o2.isDragging) {
               o1.x -= nx * (overlap / 2);
               o1.y -= ny * (overlap / 2);
@@ -166,34 +135,22 @@ export const TechOrbs = () => {
             } else if (o1.isDragging) {
               o2.x += nx * overlap;
               o2.y += ny * overlap;
-            } else if (o2.isDragging) {
+            } else {
               o1.x -= nx * overlap;
               o1.y -= ny * overlap;
             }
-
-            // Elastic Velocity Exchange (1D along normal)
             const dvx = o1.vx - o2.vx;
             const dvy = o1.vy - o2.vy;
             const velocityAlongNormal = dvx * nx + dvy * ny;
-
-            // If moving towards each other
             if (velocityAlongNormal > 0) {
               const impulse = (1 + restitution) * velocityAlongNormal / 2;
-              
-              if (!o1.isDragging) {
-                o1.vx -= impulse * nx;
-                o1.vy -= impulse * ny;
-              }
-              if (!o2.isDragging) {
-                o2.vx += impulse * nx;
-                o2.vy += impulse * ny;
-              }
+              if (!o1.isDragging) { o1.vx -= impulse * nx; o1.vy -= impulse * ny; }
+              if (!o2.isDragging) { o2.vx += impulse * nx; o2.vy += impulse * ny; }
             }
           }
         }
       }
 
-      // 3. Sync DOM with GPU Hardware Acceleration (translate3d)
       for (let i = 0; i < orbs.length; i++) {
         const orb = orbs[i];
         if (orb.element) {
@@ -201,55 +158,42 @@ export const TechOrbs = () => {
         }
       }
 
-      // Only request next frame if container is in view
       if (isInView) {
         animationFrameId = requestAnimationFrame(updatePhysics);
       }
     };
 
-    if (isInView) {
-      updatePhysics();
-    }
+    if (isInView) updatePhysics();
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [isInView, isMobile]);
+  }, [isInView]);
 
-  // Pointer Interaction Handlers
   const handlePointerDown = (e: React.PointerEvent, id: string) => {
     const orb = orbsRef.current.find(o => o.id === id);
     if (!orb) return;
-
     orb.isDragging = true;
     dragState.current.activeId = id;
     dragState.current.lastMouseX = e.clientX;
     dragState.current.lastMouseY = e.clientY;
     dragState.current.lastTime = performance.now();
-    
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
     const { activeId } = dragState.current;
     if (!activeId) return;
-
     const orb = orbsRef.current.find(o => o.id === activeId);
     if (!orb) return;
-
     const containerRect = containerRef.current?.getBoundingClientRect();
     if (!containerRect) return;
-
-    // Direct movement to mouse position relative to container
     orb.x = e.clientX - containerRect.left;
     orb.y = e.clientY - containerRect.top;
-
-    // Track velocity
     const now = performance.now();
     const dt = now - dragState.current.lastTime;
     if (dt > 0) {
-      orb.vx = (e.clientX - dragState.current.lastMouseX) * (16 / dt) * 0.5; // Scale to ~60fps
+      orb.vx = (e.clientX - dragState.current.lastMouseX) * (16 / dt) * 0.5;
       orb.vy = (e.clientY - dragState.current.lastMouseY) * (16 / dt) * 0.5;
     }
-
     dragState.current.lastMouseX = e.clientX;
     dragState.current.lastMouseY = e.clientY;
     dragState.current.lastTime = now;
@@ -258,19 +202,74 @@ export const TechOrbs = () => {
   const handlePointerUp = (e: React.PointerEvent) => {
     const { activeId } = dragState.current;
     if (!activeId) return;
-
     const orb = orbsRef.current.find(o => o.id === activeId);
     if (orb) {
       orb.isDragging = false;
-      
-      // Cap throw velocity to prevent insane speeds
       orb.vx = Math.max(-40, Math.min(40, orb.vx));
       orb.vy = Math.max(-40, Math.min(40, orb.vy));
     }
-
     dragState.current.activeId = null;
     e.currentTarget.releasePointerCapture(e.pointerId);
   };
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full max-w-[1200px] mx-auto h-[60vh] md:h-[70vh] border border-white/5 rounded-[3rem] bg-bg-secondary/30 overflow-hidden shadow-[inset_0_0_100px_rgba(0,0,0,0.5)] touch-none"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent-violet/5 via-bg-primary to-bg-primary pointer-events-none" />
+      {isClient && skills.map((skill) => {
+        const scale = isMobile ? 0.65 : 1;
+        const diameter = skill.radius * scale * 2;
+        return (
+          <div
+            key={skill.id}
+            ref={(el) => {
+              const orb = orbsRef.current.find(o => o.id === skill.id);
+              if (orb) orb.element = el;
+            }}
+            onPointerDown={(e) => handlePointerDown(e, skill.id)}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            style={{
+              width: diameter,
+              height: diameter,
+              backgroundColor: skill.color,
+              position: "absolute",
+              top: 0,
+              left: 0,
+              transform: `translate(-1000px, -1000px)`,
+              willChange: "transform",
+            }}
+            className="flex flex-col items-center justify-center rounded-full shadow-[inset_-10px_-10px_20px_rgba(0,0,0,0.5),inset_10px_10px_20px_rgba(255,255,255,0.1),0_20px_30px_rgba(0,0,0,0.5)] border border-white/10 group cursor-none touch-none select-none"
+          >
+            <div className="absolute top-[10%] left-[20%] w-[30%] h-[20%] bg-white/20 rounded-full blur-[2px] transform -rotate-12 pointer-events-none" />
+            <img
+              src={skill.icon}
+              alt={`${skill.name} logo`}
+              className="w-1/2 h-1/2 object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] pointer-events-none"
+              draggable={false}
+              loading="lazy"
+              decoding="async"
+            />
+            <span className="absolute -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-white/50 font-heading tracking-widest uppercase pointer-events-none whitespace-nowrap">
+              {skill.name}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+// ─── Public export ─────────────────────────────────────────────────────────────
+export const TechOrbs = () => {
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
 
   return (
     <section id="arsenal" className="relative py-32 bg-bg-primary overflow-hidden">
@@ -288,68 +287,12 @@ export const TechOrbs = () => {
             Arsenal
           </h2>
           <p className="text-text-secondary font-heading text-sm uppercase tracking-widest">
-            Grab and throw to interact
+            {isMobile ? "Touch and fling to interact" : "Grab and throw to interact"}
           </p>
         </div>
       </div>
 
-      {/* Physics Container boundary */}
-      <div 
-        ref={containerRef} 
-        className="relative w-full max-w-[1200px] mx-auto h-[60vh] md:h-[70vh] border border-white/5 rounded-[3rem] bg-bg-secondary/30 overflow-hidden shadow-[inset_0_0_100px_rgba(0,0,0,0.5)] touch-none"
-      >
-        {/* Deep ambient background glow inside the container */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent-violet/5 via-bg-primary to-bg-primary pointer-events-none" />
-
-        {/* 3D Glass Spheres controlled by Custom Physics Engine */}
-        {isClient && skills.map((skill) => {
-          const diameter = isMobile ? skill.radius * 0.8 * 2 : skill.radius * 2;
-
-          return (
-            <div
-              key={skill.id}
-              ref={(el) => { 
-                const orb = orbsRef.current.find(o => o.id === skill.id);
-                if (orb) orb.element = el;
-              }}
-              onPointerDown={(e) => handlePointerDown(e, skill.id)}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-              onPointerCancel={handlePointerUp}
-              style={{ 
-                width: diameter, 
-                height: diameter,
-                backgroundColor: skill.color,
-                position: "absolute",
-                top: 0,
-                left: 0,
-                // Initial hide to prevent flash
-                transform: `translate(-1000px, -1000px)`,
-                willChange: "transform"
-              }}
-              className="flex flex-col items-center justify-center rounded-full backdrop-blur-md shadow-[inset_-10px_-10px_20px_rgba(0,0,0,0.5),inset_10px_10px_20px_rgba(255,255,255,0.1),0_20px_30px_rgba(0,0,0,0.5)] border border-white/10 group cursor-none touch-none select-none"
-            >
-              {/* Internal Glass Highlight */}
-              <div className="absolute top-[10%] left-[20%] w-[30%] h-[20%] bg-white/20 rounded-full blur-[2px] transform -rotate-12 pointer-events-none" />
-              
-              {/* Tech SVG Logo */}
-              <img 
-                src={skill.icon} 
-                alt={`${skill.name} logo`} 
-                className="w-1/2 h-1/2 object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] pointer-events-none"
-                draggable={false}
-                loading="lazy"
-                decoding="async"
-              />
-              
-              {/* Label */}
-              <span className="absolute -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] md:text-xs text-white/50 font-heading tracking-widest uppercase pointer-events-none whitespace-nowrap">
-                {skill.name}
-              </span>
-            </div>
-          );
-        })}
-      </div>
+      <TechOrbsPhysics />
     </section>
   );
 };

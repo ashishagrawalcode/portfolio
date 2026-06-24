@@ -7,6 +7,9 @@ export const FluidCursor = ({ mousePointer }: { mousePointer: React.MutableRefOb
   const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // On touch devices (mobile), there is no cursor — skip the animation loop entirely
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
     let animationFrameId: number;
     let cursorX = 0;
     let cursorY = 0;
