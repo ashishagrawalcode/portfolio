@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MagneticButton } from "../ui/MagneticButton";
+import { FooterWebGL } from "../canvas/FooterWebGL";
 
 const socialLinks = [
   { label: "GitHub", href: "https://github.com" },
@@ -22,13 +23,11 @@ export const FinalCTA = () => {
       {/* Top divider */}
       <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
+      {/* WebGL Animated Background covering the entire footer */}
+      <FooterWebGL />
+
       {/* CTA Section */}
-      <div className="relative py-24 md:py-32 flex items-center justify-center text-center">
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[40vw] rounded-full bg-accent-violet/6 blur-[100px] pointer-events-none"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
+      <div className="relative py-24 md:py-32 flex items-center justify-center text-center z-10">
 
         <div className="relative z-10 max-w-3xl px-6">
           <motion.p
@@ -89,7 +88,7 @@ export const FinalCTA = () => {
       </div>
 
       {/* Footer Grid */}
-      <div className="border-t border-white/[0.04]">
+      <div className="border-t border-white/[0.04] relative z-10 bg-bg-primary/40 backdrop-blur-[2px]">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
             {/* Brand Column */}
@@ -159,7 +158,7 @@ export const FinalCTA = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-white/[0.04]">
+      <div className="border-t border-white/[0.04] relative z-10 bg-bg-primary/60 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-[10px] text-white/20 font-heading tracking-wider">
             © 2024 Ashish Agrawal
