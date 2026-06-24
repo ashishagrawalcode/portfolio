@@ -5,14 +5,12 @@ import { MagneticButton } from "../ui/MagneticButton";
 import { FooterWebGL } from "../canvas/FooterWebGL";
 
 const socialLinks = [
-  { label: "GitHub", href: "https://github.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "Twitter / X", href: "https://x.com" },
-  { label: "Instagram", href: "https://instagram.com" },
+  { label: "GitHub", href: "https://github.com/ashishagrawalcode" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/ashishagrawal815/" },
 ];
 
 const footerLinks = [
-  { label: "Resume", href: "#" },
+  { label: "Resume", href: "/resume" },
   { label: "Blog", href: "#" },
   { label: "Uses", href: "#" },
 ];
@@ -67,7 +65,8 @@ export const FinalCTA = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.15 }}
           >
-            <MagneticButton className="text-sm md:text-base">
+            <a href="mailto:agrawalashish815@gmail.com">
+              <MagneticButton className="text-sm md:text-base">
               Start a Conversation
               <svg
                 width="18"
@@ -82,7 +81,8 @@ export const FinalCTA = () => {
                 <line x1="7" y1="17" x2="17" y2="7" />
                 <polyline points="7 7 17 7 17 17" />
               </svg>
-            </MagneticButton>
+              </MagneticButton>
+            </a>
           </motion.div>
         </div>
       </div>

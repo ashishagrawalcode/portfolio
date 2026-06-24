@@ -63,7 +63,7 @@ export const TechOrbs = () => {
         
         // Initial gentle explosion
         const angle = (index / skills.length) * Math.PI * 2;
-        const speed = Math.random() * 5 + 5;
+        const speed = Math.random() * 2 + 1; // Slower, elegant initial speed
         
         return {
           id: skill.id,
@@ -84,19 +84,29 @@ export const TechOrbs = () => {
       const orbs = orbsRef.current;
       const w = container.clientWidth;
       const h = container.clientHeight;
-      const friction = 0.99; // Air resistance
-      const restitution = 0.8; // Bounciness
+      const friction = 1.0; // Perfect vacuum (no air resistance)
+      const restitution = 1.0; // Perfectly elastic collisions
 
       // 1. Move Orbs & Apply Friction
       for (let i = 0; i < orbs.length; i++) {
         const orb = orbs[i];
         if (orb.isDragging) continue;
 
+        // Add a gentle nudge if the orb slows down too much, keeping them flowing
+        const currentSpeed = Math.hypot(orb.vx, orb.vy);
+        if (currentSpeed < 0.5) {
+          orb.vx += (Math.random() - 0.5) * 0.1;
+          orb.vy += (Math.random() - 0.5) * 0.1;
+        }
+
+        // Cap max speed so they don't go crazy over time
+        if (currentSpeed > 3) {
+          orb.vx = (orb.vx / currentSpeed) * 3;
+          orb.vy = (orb.vy / currentSpeed) * 3;
+        }
+
         orb.x += orb.vx;
         orb.y += orb.vy;
-        
-        orb.vx *= friction;
-        orb.vy *= friction;
 
         // Wall Collisions
         if (orb.x - orb.radius < 0) {
@@ -169,11 +179,11 @@ export const TechOrbs = () => {
         }
       }
 
-      // 3. Sync DOM
+      // 3. Sync DOM with GPU Hardware Acceleration (translate3d)
       for (let i = 0; i < orbs.length; i++) {
         const orb = orbs[i];
         if (orb.element) {
-          orb.element.style.transform = `translate(${orb.x - orb.radius}px, ${orb.y - orb.radius}px)`;
+          orb.element.style.transform = `translate3d(${orb.x - orb.radius}px, ${orb.y - orb.radius}px, 0)`;
         }
       }
 

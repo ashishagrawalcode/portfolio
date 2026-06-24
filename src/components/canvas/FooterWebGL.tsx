@@ -112,6 +112,8 @@ export const FooterWebGL = () => {
       <Canvas 
         camera={{ position: [0, 10, 20], fov: 75 }}
         className="w-full h-full"
+        dpr={[1, 1.5]}
+        performance={{ min: 0.5 }}
       >
         <fog attach="fog" args={["#06070a", 10, 50]} /> {/* Fade to bg-primary */}
         <WavePoints />

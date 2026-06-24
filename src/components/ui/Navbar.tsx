@@ -10,6 +10,7 @@ const navItems = [
   { label: "Experience", href: "#experience" },
   { label: "Arsenal", href: "#arsenal" },
   { label: "Contact", href: "#contact" },
+  { label: "Resume", href: "/resume" },
 ];
 
 export const Navbar = () => {
@@ -40,9 +41,9 @@ export const Navbar = () => {
       lastScrollY.current = currentY;
 
       // Active section detection
-      const sections = navItems.map((item) =>
-        document.querySelector(item.href)
-      );
+      const sections = navItems
+        .filter(item => item.href.startsWith("#"))
+        .map((item) => document.querySelector(item.href));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = sections[i];
         if (el) {
@@ -60,6 +61,10 @@ export const Navbar = () => {
   }, []);
 
   const scrollTo = (href: string) => {
+    if (href.startsWith("/")) {
+      window.location.href = href;
+      return;
+    }
     const el = document.querySelector(href);
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });

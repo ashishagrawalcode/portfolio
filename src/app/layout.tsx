@@ -18,9 +18,49 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Ashish Agrawal | Founder & Developer",
+  title: {
+    default: "Ashish Agrawal | Founder & Full Stack Developer",
+    template: "%s | Ashish Agrawal",
+  },
   description:
-    "Founder, Full Stack Developer, Product Designer. Building products that matter.",
+    "Portfolio of Ashish Agrawal - Founder, Full Stack Developer, and Product Designer. Building premium, high-performance digital experiences and products that matter.",
+  keywords: [
+    "Ashish Agrawal",
+    "Full Stack Developer",
+    "Founder",
+    "React Developer",
+    "Next.js Developer",
+    "Web Designer",
+    "Software Engineer",
+    "Portfolio",
+  ],
+  authors: [{ name: "Ashish Agrawal" }],
+  creator: "Ashish Agrawal",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://ashishagrawal.com", // update to final domain later
+    title: "Ashish Agrawal | Founder & Full Stack Developer",
+    description: "Building premium, high-performance digital experiences and products that matter.",
+    siteName: "Ashish Agrawal Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ashish Agrawal | Founder & Full Stack Developer",
+    description: "Building premium, high-performance digital experiences and products that matter.",
+    creator: "@ashishagrawal",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
