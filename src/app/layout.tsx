@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -75,6 +76,7 @@ export default function RootLayout({
     >
       <body className="bg-bg-primary text-text-primary antialiased">
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
