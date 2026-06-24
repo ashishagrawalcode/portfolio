@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { signaturePaths } from "../loader/signature-path";
 
 const navItems = [
   { label: "Home", href: "#hero" },
@@ -14,53 +16,50 @@ const navItems = [
 ];
 
 export const Navbar = () => {
-  const [isScrolledDown, setIsScrolledDown] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
+  const pathname = usePathname();
   const [activeIndex, setActiveIndex] = useState(0);
-  
-  const lastScrollY = useRef(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const { scrollY } = useScroll();
 
-  // Expanded if we are at top, or hovered, or clicked (on mobile)
-  const isExpanded = !isScrolledDown || isHovered || isClicked;
+  // High-performance scroll detection for Auto Open/Close
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() || 0;
+    const diff = latest - previous;
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      
-      // Smart collapse logic
-      if (currentY < 100) {
-        setIsScrolledDown(false);
-      } else if (currentY > lastScrollY.current + 15) {
-        setIsScrolledDown(true);
-        setIsClicked(false);
-      } else if (currentY < lastScrollY.current - 15) {
-        setIsScrolledDown(false);
-      }
-      
-      lastScrollY.current = currentY;
+    // Scroll Down -> Auto Close
+    if (diff > 15 && latest > 50) {
+      if (isOpen) setIsOpen(false);
+    }
+    // Scroll Up -> Auto Open
+    else if (diff < -15) {
+      if (!isOpen) setIsOpen(true);
+    }
 
-      // Active section detection
-      const sections = navItems
-        .filter(item => item.href.startsWith("#"))
-        .map((item) => document.querySelector(item.href));
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = sections[i];
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= window.innerHeight / 3) {
-            setActiveIndex(i);
-            break;
-          }
+    // Active section detection
+    const sections = navItems
+      .filter((item) => item.href.startsWith("#"))
+      .map((item) => document.querySelector(item.href));
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const el = sections[i];
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= window.innerHeight / 3) {
+          setActiveIndex(i);
+          break;
         }
       }
-    };
+    }
+  });
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useEffect(() => {
+    if (pathname === "/resume") {
+      const resumeIndex = navItems.findIndex((item) => item.href === "/resume");
+      if (resumeIndex !== -1) setActiveIndex(resumeIndex);
+    }
+  }, [pathname]);
 
   const scrollTo = (href: string) => {
+    setIsOpen(false);
     if (href.startsWith("/")) {
       window.location.href = href;
       return;
@@ -69,42 +68,64 @@ export const Navbar = () => {
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
-    if (window.scrollY > 100) {
-      setIsScrolledDown(true);
-    }
-    setIsClicked(false);
   };
 
   return (
-    <div className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100] flex justify-center">
+    <div className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100] flex justify-center pointer-events-none w-full">
       <motion.nav
-        layout
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={() => {
-          if (!isExpanded) setIsClicked(true);
-        }}
         initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 400, 
-          damping: 30 
+        animate={{ 
+          y: 0, 
+          opacity: 1,
+          width: isOpen ? "95vw" : "160px",
+          height: isOpen ? "52px" : "48px",
+          borderRadius: isOpen ? 32 : 40 
         }}
-        className={`relative flex items-center justify-center p-2 rounded-[32px] bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden ${
-          !isExpanded ? "cursor-none" : ""
-        }`}
+        transition={{ type: "spring", stiffness: 400, damping: 28, mass: 0.8 }}
+        style={{ maxWidth: isOpen ? "600px" : "160px" }}
+        className="relative bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)] pointer-events-auto overflow-hidden group flex items-center justify-center"
       >
-        <AnimatePresence mode="popLayout" initial={false}>
-          {isExpanded ? (
-            <motion.div
-              key="expanded"
-              initial={{ opacity: 0, filter: "blur(4px)" }}
-              animate={{ opacity: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, filter: "blur(4px)" }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center gap-1 p-1 md:p-0 max-w-[85vw] md:max-w-none overflow-x-auto [&::-webkit-scrollbar]:hidden"
-              style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
+        <div className="relative w-full h-full flex items-center justify-center">
+          {/* Closed State - Signature Pill */}
+          <motion.button
+            animate={{ 
+              opacity: isOpen ? 0 : 1, 
+              scale: isOpen ? 0.8 : 1,
+            }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setIsOpen(true)}
+            className={`absolute inset-0 flex items-center justify-center w-full h-full cursor-pointer hover:bg-white/[0.02] transition-colors ${isOpen ? 'pointer-events-none' : ''}`}
+          >
+            <svg
+              viewBox="0 0 480 130"
+              className="w-24 h-auto drop-shadow-[0_0_12px_rgba(139,92,246,0.8)]"
+            >
+              {signaturePaths.map((path, idx) => (
+                <path
+                  key={`sig-${idx}`}
+                  d={path}
+                  stroke={idx === 1 ? "#8B5CF6" : "#ffffff"}
+                  strokeWidth="8" // Balanced thickness
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              ))}
+            </svg>
+          </motion.button>
+
+          {/* Open State - Nav Menu */}
+          <motion.div
+            animate={{ 
+              opacity: isOpen ? 1 : 0, 
+              scale: isOpen ? 1 : 0.95 
+            }}
+            transition={{ duration: 0.2, delay: isOpen ? 0.1 : 0 }}
+            className={`absolute inset-0 flex items-center px-1.5 md:px-2 w-full h-full ${!isOpen ? 'pointer-events-none' : ''}`}
+          >
+            <div
+              className="flex items-center gap-1 overflow-x-auto [&::-webkit-scrollbar]:hidden w-full h-full"
+              style={{ msOverflowStyle: "none", scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
             >
               {navItems.map((item, i) => {
                 const isActive = activeIndex === i;
@@ -115,14 +136,14 @@ export const Navbar = () => {
                       e.stopPropagation();
                       scrollTo(item.href);
                     }}
-                    className={`relative z-10 shrink-0 px-3 md:px-4 py-2.5 md:py-1.5 rounded-full text-[12px] md:text-[13px] font-heading tracking-wide transition-colors duration-300 flex items-center justify-center ${
+                    className={`relative z-10 shrink-0 px-4 md:px-5 h-full rounded-full text-[13px] md:text-[14px] font-heading tracking-wide transition-colors duration-300 flex items-center justify-center ${
                       isActive ? "text-white" : "text-white/40 hover:text-white/70"
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="activeNavIndicator"
-                        className="absolute inset-0 rounded-full bg-white/[0.08] border border-white/[0.06] -z-10"
+                        className="absolute inset-[4px] rounded-full bg-white/[0.08] border border-white/[0.06] -z-10 shadow-[inset_0_1px_4px_rgba(255,255,255,0.1)]"
                         transition={{ type: "spring", stiffness: 350, damping: 30 }}
                       />
                     )}
@@ -130,22 +151,9 @@ export const Navbar = () => {
                   </button>
                 );
               })}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="collapsed"
-              initial={{ opacity: 0, filter: "blur(4px)" }}
-              animate={{ opacity: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, filter: "blur(4px)" }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center justify-center px-4 py-1"
-            >
-              <div className="w-6 h-6 rounded-full border border-white/20 bg-white/5 flex items-center justify-center">
-                <span className="font-display font-bold text-white text-xs">A</span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </motion.div>
+        </div>
       </motion.nav>
     </div>
   );

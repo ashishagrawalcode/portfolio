@@ -44,7 +44,7 @@ export const FluidCursor = ({ mousePointer }: { mousePointer: React.MutableRefOb
     <>
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-5 h-5 bg-white mix-blend-difference pointer-events-none z-[100]"
+        className="hidden sm:block fixed top-0 left-0 w-5 h-5 bg-white mix-blend-difference pointer-events-none z-[100]"
         style={{
           borderRadius: "0 50% 50% 50%",
           boxShadow: "0 0 20px rgba(255,255,255,0.4)"
@@ -52,9 +52,9 @@ export const FluidCursor = ({ mousePointer }: { mousePointer: React.MutableRefOb
       />
       <div
         ref={glowRef}
-        className="fixed top-0 left-0 w-64 h-64 bg-accent-violet rounded-full pointer-events-none z-[90] opacity-15 blur-[80px]"
+        className="hidden sm:block fixed top-0 left-0 w-64 h-64 bg-accent-violet rounded-full pointer-events-none z-[90] opacity-15 blur-[80px]"
       />
-      <style dangerouslySetInnerHTML={{ __html: `* { cursor: none !important; } html, body { cursor: none !important; }` }} />
+      <style dangerouslySetInnerHTML={{ __html: `@media (pointer: fine) { * { cursor: none !important; } html, body { cursor: none !important; } }` }} />
     </>
   );
 };

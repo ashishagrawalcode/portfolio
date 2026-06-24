@@ -47,7 +47,7 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
       <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none mix-blend-screen">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" preserveAspectRatio="none">
           <filter id="noiseFilter">
-            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch" />
           </filter>
           <rect width="100%" height="100%" filter="url(#noiseFilter)" />
         </svg>
@@ -78,57 +78,71 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
               exit={{ opacity: 0, scale: 1.5, filter: "blur(20px)" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Ashish */}
-              <motion.path
-                d={signaturePaths[0]}
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.5, ease: "easeInOut" }}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}
-              />
-              {/* Dot */}
-              <motion.path
-                d={signaturePaths[1]}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2, delay: 1.2 }}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={5} // Slightly thicker for the dot
-                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))", transformOrigin: "142px 48px" }}
-              />
-              {/* Agrawal */}
-              <motion.path
-                d={signaturePaths[2]}
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.8, delay: 1.2, ease: "easeInOut" }}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}
-              />
-              {/* Ending Line 1 */}
-              <motion.path
-                d={signaturePaths[3]}
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 0.2, delay: 2.8, ease: "easeOut" }}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}
-              />
-              {/* Ending Line 2 */}
-              <motion.path
-                d={signaturePaths[4]}
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 0.2, delay: 2.9, ease: "easeOut" }}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}
-              />
+              <style>{`
+                .path-draw {
+                  stroke-dasharray: 1;
+                  stroke-dashoffset: 1;
+                  animation: draw forwards cubic-bezier(0.4, 0, 0.2, 1);
+                }
+                @keyframes draw {
+                  to { stroke-dashoffset: 0; }
+                }
+                .dot-draw {
+                  opacity: 0;
+                  transform: scale(0.5);
+                  animation: popIn 0.2s forwards ease-out;
+                }
+                @keyframes popIn {
+                  to { opacity: 1; transform: scale(1); }
+                }
+              `}</style>
+              <g style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}>
+                {/* Ashish */}
+                <path
+                  d={signaturePaths[0]}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  pathLength="1"
+                  className="path-draw"
+                  style={{ animationDuration: "1.5s" }}
+                />
+                {/* Dot */}
+                <path
+                  d={signaturePaths[1]}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={5}
+                  className="dot-draw"
+                  style={{ transformOrigin: "142px 48px", animationDelay: "1.2s" }}
+                />
+                {/* Agrawal */}
+                <path
+                  d={signaturePaths[2]}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  pathLength="1"
+                  className="path-draw"
+                  style={{ animationDuration: "1.8s", animationDelay: "1.2s" }}
+                />
+                {/* Ending Line 1 */}
+                <path
+                  d={signaturePaths[3]}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  pathLength="1"
+                  className="path-draw"
+                  style={{ animationDuration: "0.2s", animationDelay: "2.8s" }}
+                />
+                {/* Ending Line 2 */}
+                <path
+                  d={signaturePaths[4]}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  pathLength="1"
+                  className="path-draw"
+                  style={{ animationDuration: "0.2s", animationDelay: "2.9s" }}
+                />
+              </g>
             </motion.svg>
           )}
 

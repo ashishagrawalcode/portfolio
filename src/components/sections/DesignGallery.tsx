@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { ScrollIndicator } from "../ui/ScrollIndicator";
 
 const designs = [
   { id: 1, label: "BRAND IDENTITY", color: "bg-blue-500/30", spread: { x: -30, y: -20, r: -15 }, img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" },
@@ -44,6 +45,8 @@ const DraggableDesignCardPinned = ({ design, index, scrollYProgress, isMobile }:
           src={design.img} 
           alt={design.label} 
           className="absolute inset-0 w-full h-full object-cover opacity-80" 
+          loading="lazy"
+          decoding="async"
         />
         
         {/* Color Overlay */}
@@ -103,29 +106,18 @@ export const DesignGallery = () => {
           </p>
         </motion.div>
 
-        {/* Central Glassmorphic File Icon Container */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
+        {/* Back Cover of Folder */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[20%] z-0 pointer-events-none perspective-[1500px]">
           <motion.div
             style={{
-              scale: useTransform(scrollYProgress, [0, 0.4], [1, 1.2]),
-              opacity: useTransform(scrollYProgress, [0, 0.2], [1, 0.5]),
-              filter: useTransform(scrollYProgress, [0, 0.3], ["blur(0px)", "blur(10px)"])
+              scale: useTransform(scrollYProgress, [0, 0.4], [1, 1.25]),
+              y: useTransform(scrollYProgress, [0, 0.4], [0, 150]),
+              opacity: useTransform(scrollYProgress, [0.4, 0.6], [1, 0]),
             }}
-            className="relative w-48 h-48 md:w-64 md:h-64 rounded-[3rem] bg-accent-violet/10 border border-accent-violet/20 backdrop-blur-md flex items-center justify-center shadow-[0_0_80px_rgba(139,92,246,0.15)] overflow-hidden"
+            className="w-[220px] h-[160px] md:w-[320px] md:h-[220px] bg-gradient-to-br from-accent-violet/20 to-bg-primary/50 border border-white/10 rounded-2xl rounded-tl-[40px] backdrop-blur-2xl shadow-[inset_0_0_40px_rgba(139,92,246,0.3)] flex flex-col justify-end p-4 overflow-hidden"
           >
-            {/* Glowing inner core */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent-violet/20 to-transparent opacity-50" />
-
-            {/* File/Folder Vector */}
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              className="w-16 h-16 md:w-24 md:h-24 text-accent-violet/60 drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]"
-              strokeWidth="1"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
-            </svg>
+            {/* Grid pattern on the inside */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
           </motion.div>
         </div>
 
@@ -134,13 +126,34 @@ export const DesignGallery = () => {
           <DraggableDesignCardPinned key={design.id} design={design} index={index} scrollYProgress={scrollYProgress} isMobile={isMobile} />
         ))}
 
+        {/* Front Cover of Folder */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[20%] z-30 pointer-events-none perspective-[1500px]">
+          <motion.div
+            style={{
+              scale: useTransform(scrollYProgress, [0, 0.4], [1, 1.25]),
+              y: useTransform(scrollYProgress, [0, 0.4], [0, 150]),
+              rotateX: useTransform(scrollYProgress, [0, 0.25], [0, -85]), // Open downwards more dramatically
+              opacity: useTransform(scrollYProgress, [0.4, 0.6], [1, 0]),
+              transformOrigin: "bottom center"
+            }}
+            className="w-[220px] h-[150px] md:w-[320px] md:h-[200px] mt-2 md:mt-5 bg-gradient-to-tr from-white/10 via-accent-violet/20 to-white/5 border border-white/20 rounded-2xl backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.5)] overflow-hidden"
+          >
+            {/* Glass reflection streak */}
+            <div className="absolute -inset-1/2 bg-gradient-to-tr from-transparent via-white/20 to-transparent rotate-45 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+            
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 opacity-50">
+              <div className="w-16 h-1.5 rounded-full bg-gradient-to-r from-white/40 to-transparent" />
+              <div className="w-24 h-1.5 rounded-full bg-gradient-to-r from-white/20 to-transparent" />
+            </div>
+          </motion.div>
+        </div>
+
         {/* Progress Indicator */}
         <motion.div
           style={{ opacity: useTransform(scrollYProgress, [0.9, 0.95], [1, 0]) }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 font-heading text-xs tracking-widest uppercase pointer-events-none"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-40"
         >
-          <span>Scroll to unpack</span>
-          <div className="w-[1px] h-8 bg-gradient-to-b from-white/30 to-transparent" />
+          <ScrollIndicator text="Unpack Gallery" />
         </motion.div>
 
       </div>

@@ -20,6 +20,9 @@ const skills = [
   { id: "css", name: "CSS3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg", color: "rgba(21,114,182,0.15)", radius: 40 },
   { id: "js", name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg", color: "rgba(247,223,30,0.15)", radius: 40 },
   { id: "render", name: "Render", icon: "https://cdn.simpleicons.org/render/white", color: "rgba(255,255,255,0.15)", radius: 45 },
+  { id: "c", name: "C", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg", color: "rgba(168,185,204,0.15)", radius: 40 },
+  { id: "cpp", name: "C++", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg", color: "rgba(0,89,156,0.15)", radius: 45 },
+  { id: "python", name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg", color: "rgba(55,118,171,0.15)", radius: 50 },
 ];
 
 export const TechOrbs = () => {
@@ -45,18 +48,28 @@ export const TechOrbs = () => {
     lastTime: 0,
   });
 
+  const [isClient, setIsClient] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   useEffect(() => {
     if (!containerRef.current) return;
     
     const container = containerRef.current;
     const width = container.clientWidth;
     const height = container.clientHeight;
-    const isMobile = window.innerWidth < 768;
 
     // Initialize physics bodies
     if (orbsRef.current.length === 0) {
       orbsRef.current = skills.map((skill, index) => {
-        const actualRadius = isMobile ? skill.radius * 0.7 : skill.radius;
+        const actualRadius = isMobile ? skill.radius * 0.8 : skill.radius; // Slightly bigger on mobile than 0.7
         // Start in center with slight spread
         const x = width / 2 + (Math.random() - 0.5) * 100;
         const y = height / 2 + (Math.random() - 0.5) * 100;
@@ -283,9 +296,8 @@ export const TechOrbs = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent-violet/5 via-bg-primary to-bg-primary pointer-events-none" />
 
         {/* 3D Glass Spheres controlled by Custom Physics Engine */}
-        {skills.map((skill) => {
-          const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
-          const diameter = isMobile ? skill.radius * 0.7 * 2 : skill.radius * 2;
+        {isClient && skills.map((skill) => {
+          const diameter = isMobile ? skill.radius * 0.8 * 2 : skill.radius * 2;
 
           return (
             <div
@@ -320,6 +332,8 @@ export const TechOrbs = () => {
                 alt={`${skill.name} logo`} 
                 className="w-1/2 h-1/2 object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] pointer-events-none"
                 draggable={false}
+                loading="lazy"
+                decoding="async"
               />
               
               {/* Label */}

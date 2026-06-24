@@ -19,11 +19,11 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: "Ashish Agrawal | Founder & Full Stack Developer",
+    default: "Ashish Agrawal | CS Undergrad & Full Stack Developer",
     template: "%s | Ashish Agrawal",
   },
   description:
-    "Portfolio of Ashish Agrawal - Founder, Full Stack Developer, and Product Designer. Building premium, high-performance digital experiences and products that matter.",
+    "Portfolio of Ashish Agrawal - CS Undergrad at BMU, Aspiring Full Stack Developer building FinTech & Web Solutions.",
   keywords: [
     "Ashish Agrawal",
     "Full Stack Developer",
@@ -40,14 +40,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://ashishagrawal.com", // update to final domain later
-    title: "Ashish Agrawal | Founder & Full Stack Developer",
-    description: "Building premium, high-performance digital experiences and products that matter.",
+    title: "Ashish Agrawal | CS Undergrad & Full Stack Developer",
+    description: "Portfolio of Ashish Agrawal - CS Undergrad at BMU, Aspiring Full Stack Developer building FinTech & Web Solutions.",
     siteName: "Ashish Agrawal Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ashish Agrawal | Founder & Full Stack Developer",
-    description: "Building premium, high-performance digital experiences and products that matter.",
+    title: "Ashish Agrawal | CS Undergrad & Full Stack Developer",
+    description: "Portfolio of Ashish Agrawal - CS Undergrad at BMU, Aspiring Full Stack Developer building FinTech & Web Solutions.",
     creator: "@ashishagrawal",
   },
   robots: {

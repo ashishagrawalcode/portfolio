@@ -53,7 +53,7 @@ export const FinalCTA = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-text-secondary text-sm md:text-base max-w-md mx-auto mb-10 leading-relaxed"
+            className="font-sans font-light text-text-secondary text-base md:text-lg max-w-md mx-auto mb-10 leading-relaxed"
           >
             Have a project in mind, or just want to say hello? I&apos;m always
             open to discussing new ideas and opportunities.
@@ -88,30 +88,49 @@ export const FinalCTA = () => {
       </div>
 
       {/* Footer Grid */}
-      <div className="border-t border-white/[0.04] relative z-10 bg-bg-primary/40 backdrop-blur-[2px]">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+      <div className="relative z-10 bg-bg-primary/80 backdrop-blur-xl border-t border-white/[0.05]">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent-violet/30 to-transparent" />
+        
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-20">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8">
+            
             {/* Brand Column */}
-            <div>
-              <motion.h3
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+            <div className="md:col-span-6 flex flex-col gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="font-display text-xl text-white mb-3"
               >
-                Ashish Agrawal
-              </motion.h3>
-              <p className="text-text-secondary/60 text-xs leading-relaxed max-w-xs">
-                Founder &amp; Full Stack Developer crafting premium digital experiences.
-              </p>
+                <h3 className="font-display text-3xl md:text-4xl font-bold text-white mb-2">
+                  Ashish Agrawal
+                </h3>
+                <p className="text-text-secondary/70 text-sm md:text-base leading-relaxed max-w-sm">
+                  CS Undergrad &amp; Full Stack Developer crafting premium digital experiences.
+                </p>
+              </motion.div>
+              
+              <div className="mt-auto pt-8">
+                <a 
+                  href="mailto:agrawalashish815@gmail.com" 
+                  className="inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors group"
+                >
+                  <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 group-hover:border-white/20 transition-all">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                      <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                  </div>
+                  <span className="font-heading text-sm tracking-wide">agrawalashish815@gmail.com</span>
+                </a>
+              </div>
             </div>
 
             {/* Links Column */}
-            <div>
-              <p className="text-[10px] font-heading tracking-[0.3em] uppercase text-white/30 mb-4">
-                Quick Links
+            <div className="md:col-span-3">
+              <p className="text-[10px] font-heading tracking-[0.3em] uppercase text-white/30 mb-6">
+                Navigation
               </p>
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-4">
                 {footerLinks.map((link, i) => (
                   <motion.a
                     key={link.label}
@@ -120,21 +139,21 @@ export const FinalCTA = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.05 }}
-                    className="text-text-secondary/50 hover:text-white text-sm transition-colors duration-300 w-fit group flex items-center gap-2"
+                    className="text-text-secondary/60 hover:text-white text-base transition-colors duration-300 w-fit group flex items-center gap-3"
                   >
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-accent-violet transition-colors" />
                     {link.label}
-                    <span className="inline-block w-0 group-hover:w-4 h-[1px] bg-accent-violet transition-all duration-300" />
                   </motion.a>
                 ))}
               </div>
             </div>
 
             {/* Socials Column */}
-            <div>
-              <p className="text-[10px] font-heading tracking-[0.3em] uppercase text-white/30 mb-4">
-                Connect
+            <div className="md:col-span-3">
+              <p className="text-[10px] font-heading tracking-[0.3em] uppercase text-white/30 mb-6">
+                Socials
               </p>
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-4">
                 {socialLinks.map((link, i) => (
                   <motion.a
                     key={link.label}
@@ -145,14 +164,18 @@ export const FinalCTA = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.05 }}
-                    className="text-text-secondary/50 hover:text-white text-sm transition-colors duration-300 w-fit group flex items-center gap-2"
+                    className="text-text-secondary/60 hover:text-white text-base transition-colors duration-300 w-fit group flex items-center gap-3"
                   >
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-accent-blue transition-colors" />
                     {link.label}
-                    <span className="inline-block w-0 group-hover:w-4 h-[1px] bg-accent-violet transition-all duration-300" />
+                    <svg className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-accent-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
                   </motion.a>
                 ))}
               </div>
             </div>
+            
           </div>
         </div>
       </div>

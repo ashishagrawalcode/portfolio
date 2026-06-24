@@ -2,59 +2,59 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { ScrollIndicator } from "../ui/ScrollIndicator";
 
 const frames = [
   {
-    text: "It started with curiosity.",
-    sub: "A desire to understand how things work, how pixels become products.",
+    text: "It began with a spark.",
+    sub: "A relentless curiosity to fuse logical engineering with aesthetic design.",
   },
   {
-    text: "One idea became many.",
-    sub: "Financial simulations. Business systems. Interactive experiences. Each one a step forward.",
+    text: "From Campus to Core Architecture.",
+    sub: "Leading design teams at BMU, orchestrating hackathons, and diving deep into C++, Python, and full-stack web.",
   },
   {
-    text: "I stopped learning frameworks.",
-    sub: "The shift from consumer to creator. From tutorials to production.",
+    text: "Beyond standard frameworks.",
+    sub: "Building ArthiX, Ledzer, and VoughtMart. Transitioning from raw concepts to production-grade, scalable applications.",
   },
   {
-    text: "Today, I build what matters.",
+    text: "I don't just write code.",
     accent: true,
-    sub: "",
+    sub: "I architect experiences.",
   },
 ];
 
 const CinematicFrame = ({ frame, index, scrollYProgress }: any) => {
-  // Mapping each frame to a 20% scroll chunk of the 400vh container
-  const trigger = 0.15 + index * 0.2;
-  const startIn = Math.max(0, trigger - 0.05);
+  const trigger = 0.15 + index * 0.22;
+  const startIn = Math.max(0, trigger - 0.08);
   const endIn = trigger;
   
-  // Last frame stays visible until the end
-  const startOut = index === frames.length - 1 ? 0.95 : trigger + 0.1;
-  const endOut = index === frames.length - 1 ? 1 : startOut + 0.05;
+  const startOut = index === frames.length - 1 ? 0.95 : trigger + 0.12;
+  const endOut = index === frames.length - 1 ? 1 : startOut + 0.08;
 
   const opacity = useTransform(scrollYProgress, [startIn, endIn, startOut, endOut], [0, 1, 1, 0]);
-  const scale = useTransform(scrollYProgress, [startIn, endIn, startOut, endOut], [0.8, 1, 1, 1.2]);
-  const blur = useTransform(scrollYProgress, [startIn, endIn, startOut, endOut], ["blur(15px)", "blur(0px)", "blur(0px)", "blur(15px)"]);
+  const y = useTransform(scrollYProgress, [startIn, endIn, startOut, endOut], [50, 0, 0, -50]);
+  const blur = useTransform(scrollYProgress, [startIn, endIn, startOut, endOut], ["blur(20px)", "blur(0px)", "blur(0px)", "blur(20px)"]);
 
   return (
     <motion.div
-      style={{ opacity, scale, filter: blur }}
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl px-6 text-center flex flex-col items-center justify-center pointer-events-none"
+      style={{ opacity, y, filter: blur }}
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl px-6 text-center flex flex-col items-center justify-center pointer-events-none"
     >
       <h2
-        className={`font-display font-bold leading-[1.15] whitespace-pre-line mb-6 ${
-          frame.accent ? "text-5xl md:text-7xl lg:text-9xl tracking-tight" : "text-4xl md:text-6xl lg:text-7xl tracking-tight"
+        className={`font-display font-black leading-[1.1] whitespace-pre-line mb-6 md:mb-8 ${
+          frame.accent ? "text-6xl md:text-8xl lg:text-[10rem] tracking-tighter" : "text-5xl md:text-7xl lg:text-8xl tracking-tight"
         }`}
         style={
           frame.accent
             ? {
-                background: "linear-gradient(135deg, #8b5cf6, #3b82f6)",
+                background: "linear-gradient(135deg, #ffffff 0%, #8b5cf6 50%, #3b82f6 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
+                filter: "drop-shadow(0 20px 40px rgba(139,92,246,0.4))",
               }
             : {
-                background: "linear-gradient(180deg, #ffffff, rgba(255,255,255,0.45))",
+                background: "linear-gradient(180deg, #ffffff 30%, rgba(255,255,255,0.2) 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }
@@ -63,7 +63,9 @@ const CinematicFrame = ({ frame, index, scrollYProgress }: any) => {
         {frame.text}
       </h2>
       {frame.sub && (
-        <p className="text-white/50 text-lg md:text-2xl max-w-2xl leading-relaxed mx-auto font-heading font-light tracking-wide">
+        <p 
+          className={`font-sans font-light text-text-secondary text-base md:text-lg max-w-2xl leading-relaxed mx-auto ${frame.accent ? "text-accent-violet/80 font-semibold tracking-widest uppercase text-xl md:text-2xl" : ""}`}
+        >
           {frame.sub}
         </p>
       )}
@@ -80,17 +82,28 @@ export const Story = () => {
   });
 
   return (
-    <section id="story" ref={containerRef} className="relative h-[400vh] bg-bg-primary">
+    <section id="story" ref={containerRef} className="relative h-[450vh] bg-bg-primary">
       {/* Pinned Screen */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
         
-        {/* Dynamic Ambient Glow */}
+        {/* Animated Grid Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)] pointer-events-none" />
+
+        {/* Dynamic Ambient Glows */}
         <motion.div 
           style={{ 
-            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.8, 0.2]),
-            scale: useTransform(scrollYProgress, [0, 1], [0.8, 1.5]),
+            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.6, 0.2]),
+            scale: useTransform(scrollYProgress, [0, 1], [0.8, 2]),
+            rotate: useTransform(scrollYProgress, [0, 1], [0, 90]),
           }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] rounded-full bg-accent-violet/[0.04] blur-[120px] pointer-events-none z-0" 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[40vw] rounded-[100%] bg-accent-violet/[0.05] blur-[100px] pointer-events-none z-0 mix-blend-screen" 
+        />
+        <motion.div 
+          style={{ 
+            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.4, 0]),
+            scale: useTransform(scrollYProgress, [0, 1], [0.5, 1.5]),
+          }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[60vw] rounded-[100%] bg-accent-blue/[0.05] blur-[120px] pointer-events-none z-0 mix-blend-screen" 
         />
 
         {/* Section label */}
@@ -99,7 +112,7 @@ export const Story = () => {
             style={{ opacity: useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]) }}
             className="text-accent-violet text-[10px] md:text-xs font-heading tracking-[0.3em] uppercase"
           >
-            My Story
+            The Journey
           </motion.p>
         </div>
 
@@ -113,10 +126,9 @@ export const Story = () => {
         {/* Progress Indicator */}
         <motion.div 
           style={{ opacity: useTransform(scrollYProgress, [0.9, 0.95], [1, 0]) }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 font-heading text-xs tracking-widest uppercase pointer-events-none"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
-          <span>Scroll to uncover</span>
-          <div className="w-[1px] h-8 bg-gradient-to-b from-white/30 to-transparent" />
+          <ScrollIndicator text="Continue Journey" />
         </motion.div>
 
       </div>

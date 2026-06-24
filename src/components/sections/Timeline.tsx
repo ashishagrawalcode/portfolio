@@ -3,53 +3,57 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { signaturePaths } from "../loader/signature-path";
+import { ScrollIndicator } from "../ui/ScrollIndicator";
 
 const timelineData = [
   {
-    year: "2023 — Present",
-    title: "Founder & Full Stack",
-    org: "Independent",
-    description: "Building scalable platforms like Arthix and Ledzer. Managing full product lifecycles.",
+    year: "2026",
+    title: "Scaling New Heights",
+    org: "Full Stack Innovation",
+    description: "Expanded horizons by building multiple production-ready platforms including Ledzer, ArthiX, and VoughtMart, actively focusing on performance and scalability.",
   },
   {
-    year: "2022 — 2023",
-    title: "Core Team Member",
-    org: "Student Editorial Board",
-    description: "Led technical initiatives and designed interactive digital experiences.",
+    year: "2025 — 2026",
+    title: "Leadership & Collaboration",
+    org: "University Clubs & Teams",
+    description: "Actively shaped the technical and creative direction of numerous university organizations, from leading technical research to crafting brand identities for major hackathons and fests.",
   },
   {
-    year: "2021 — 2022",
-    title: "Web Developer",
-    org: "ACM BMU",
-    description: "Contributed to open-source projects and built tech solutions.",
+    year: "2025",
+    title: "Hackathons & Recognition",
+    org: "Competitive Environment",
+    description: "Gained recognition in competitive events like MUJMUN and Build Your Nation, while simultaneously shifting from AI-assisted builds to comprehensive hands-on coding.",
   },
   {
-    year: "2021",
-    title: "Design Lead",
-    org: "TEDx BMU",
-    description: "Crafted the complete brand identity and digital presence.",
+    year: "2025",
+    title: "Foundation Building",
+    org: "Early Development",
+    description: "Mastered core web technologies (HTML, CSS, JavaScript) and started venturing into modern frameworks, resulting in early projects like SwasthSathi and Bloom.",
   },
   {
-    year: "2020 — 2021",
-    title: "Research Contributor",
-    org: "R&D Cell",
-    description: "Explored emerging web technologies and experimental interfaces.",
+    year: "August 2025",
+    title: "The Campus Life",
+    org: "BML Munjal University",
+    description: "Immersed in the vibrant campus culture, joining various technical and cultural clubs, and participating in the first wave of hackathons and events.",
+  },
+  {
+    year: "11th August 2025",
+    title: "The Beginning",
+    org: "BML Munjal University",
+    description: "Joined BML Munjal University as a B.Tech CSE student. This marked the official start of a formal computer science journey, setting the foundation for algorithmic thinking and core engineering.",
   },
 ];
 
 const TimelineCardPinned = ({ item, index, scrollYProgress }: any) => {
-  // We have 5 items over [0, 1] scroll space.
-  // We want them to appear right as the pen reaches roughly their equivalent percentage.
-  // 0 -> 0.1, 1 -> 0.3, 2 -> 0.5, 3 -> 0.7, 4 -> 0.9
-  const triggerPoint = 0.1 + index * 0.18;
-  const hidePoint = index === 4 ? 1 : triggerPoint + 0.16;
-  // Last item stays until the absolute end.
+  const total = timelineData.length;
+  // Dynamic spread: Items appear sequentially over the scroll progress
+  const triggerPoint = 0.1 + index * (0.8 / total);
+  const hidePoint = index === total - 1 ? 1 : triggerPoint + (0.8 / total) - 0.02;
 
   const startFadeIn = Math.max(0, triggerPoint - 0.05);
   const endFadeIn = Math.max(startFadeIn + 0.01, triggerPoint);
 
-  // Last item doesn't fade out until 0.99
-  const startFadeOut = index === 4 ? 0.98 : Math.max(endFadeIn + 0.01, hidePoint - 0.05);
+  const startFadeOut = index === total - 1 ? 0.98 : Math.max(endFadeIn + 0.01, hidePoint - 0.05);
   const endFadeOut = Math.max(startFadeOut + 0.01, Math.min(hidePoint, 1));
 
   const opacity = useTransform(
@@ -67,26 +71,48 @@ const TimelineCardPinned = ({ item, index, scrollYProgress }: any) => {
   const scale = useTransform(
     scrollYProgress,
     [startFadeIn, endFadeIn, startFadeOut, endFadeOut],
-    [0.9, 1, 1, 0.9]
+    [0.85, 1, 1, 1.15]
+  );
+
+  const blur = useTransform(
+    scrollYProgress,
+    [startFadeIn, endFadeIn, startFadeOut, endFadeOut],
+    ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]
+  );
+
+  // Rotate slightly for a 3D float effect as they enter/leave
+  const rotateX = useTransform(
+    scrollYProgress,
+    [startFadeIn, endFadeIn, startFadeOut, endFadeOut],
+    [15, 0, 0, -15]
   );
 
   return (
     <motion.div
-      style={{ opacity, y, scale }}
-      className="absolute top-[45%] md:top-[45%] left-6 right-6 md:left-1/2 md:-translate-x-1/2 md:w-[600px] max-h-[50vh] overflow-y-auto p-6 md:p-8 glass-card rounded-3xl flex flex-col z-20 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-bg-secondary/90 backdrop-blur-2xl"
+      style={{ opacity, y, scale, filter: blur, rotateX, transformPerspective: 1000 }}
+      className="absolute top-[28%] md:top-[32%] left-6 right-6 md:left-1/2 md:-translate-x-1/2 md:w-[600px] max-h-[55vh] overflow-y-auto p-6 md:p-8 rounded-3xl flex flex-col z-20 shadow-[0_30px_60px_rgba(0,0,0,0.6)] bg-bg-secondary/60 backdrop-blur-3xl border border-white/10 group"
     >
-      <span className="text-accent-violet text-xs md:text-sm font-heading tracking-widest mb-1 md:mb-2 block">
-        {item.year}
-      </span>
-      <h3 className="text-xl md:text-2xl font-heading font-semibold text-white mb-1">
-        {item.title}
-      </h3>
-      <h4 className="text-xs md:text-sm text-white/50 font-heading mb-3 block">
-        {item.org}
-      </h4>
-      <p className="text-text-secondary text-sm md:text-base leading-relaxed">
-        {item.description}
-      </p>
+      {/* Animated Glowing Border on Active */}
+      <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none overflow-hidden">
+        <div className="absolute -inset-[100%] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(139,92,246,0.8)_360deg)] animate-[spin_3s_linear_infinite]" />
+      </div>
+      {/* Inner glass layer to mask the glowing border underneath the content */}
+      <div className="absolute inset-[1px] bg-bg-secondary/90 rounded-[23px] pointer-events-none z-[-1]" />
+      
+      <div className="relative z-10">
+        <span className="text-accent-violet text-xs md:text-sm font-heading tracking-widest mb-1 md:mb-2 block">
+          {item.year}
+        </span>
+        <h3 className="text-xl md:text-2xl font-heading font-semibold text-white mb-1">
+          {item.title}
+        </h3>
+        <h4 className="text-xs md:text-sm text-white/50 font-heading mb-3 block">
+          {item.org}
+        </h4>
+        <p className="font-sans font-light text-text-secondary text-base md:text-lg leading-relaxed">
+          {item.description}
+        </p>
+      </div>
     </motion.div>
   );
 };
@@ -176,10 +202,9 @@ export const Timeline = () => {
         {/* Progress Indicator */}
         <motion.div
           style={{ opacity: useTransform(scrollYProgress, [0.9, 0.95], [1, 0]) }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 font-heading text-xs tracking-widest uppercase"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
-          <span>Scroll Timeline</span>
-          <div className="w-[1px] h-8 bg-gradient-to-b from-white/30 to-transparent" />
+          <ScrollIndicator text="Scroll Timeline" />
         </motion.div>
 
       </div>
