@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useMousePosition } from "@/hooks/useMousePosition";
 import { SignatureLoader } from "@/components/loader/SignatureLoader";
@@ -12,20 +12,27 @@ export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const mousePointer = useMousePosition();
 
+  useEffect(() => {
+    // Only play the loader once per session
+    if (sessionStorage.getItem("introPlayed")) {
+      setLoading(false);
+    }
+  }, []);
+
+  const handleLoaderComplete = () => {
+    sessionStorage.setItem("introPlayed", "true");
+    setLoading(false);
+  };
+
   return (
     <>
       <AnimatePresence mode="wait">
         {loading && (
-          <SignatureLoader onComplete={() => setLoading(false)} />
+          <SignatureLoader onComplete={handleLoaderComplete} />
         )}
       </AnimatePresence>
 
-      <div
-        style={{
-          opacity: loading ? 0 : 1,
-          transition: "opacity 0.8s ease-in-out",
-        }}
-      >
+      <div className={loading ? "fixed inset-0 overflow-hidden" : ""}>
         <Navbar />
         <FluidCursor mousePointer={mousePointer} />
 

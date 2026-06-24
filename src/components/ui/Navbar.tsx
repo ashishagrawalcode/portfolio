@@ -88,6 +88,7 @@ export const Navbar = () => {
         <div className="relative w-full h-full flex items-center justify-center">
           {/* Closed State - Signature Pill */}
           <motion.button
+            aria-label="Open Navigation Menu"
             animate={{ 
               opacity: isOpen ? 0 : 1, 
               scale: isOpen ? 0.8 : 1,

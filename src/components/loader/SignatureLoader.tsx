@@ -19,12 +19,12 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
     document.body.style.overflow = "hidden";
     
     if (phase === "signature") {
-      // Signature takes ~3.2 seconds total to draw with delays
-      const t = setTimeout(() => setPhase("welcome"), 3200);
+      // Drastically reduced from 3.2s to 1.2s to improve FCP
+      const t = setTimeout(() => setPhase("welcome"), 1200);
       return () => clearTimeout(t);
     }
     if (phase === "welcome") {
-      const t = setTimeout(() => setPhase("done"), 1400);
+      const t = setTimeout(() => setPhase("done"), 600);
       return () => clearTimeout(t);
     }
     if (phase === "done") {
@@ -43,15 +43,11 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-bg-primary overflow-hidden"
     >
-      {/* Noise Texture */}
-      <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none mix-blend-screen">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" preserveAspectRatio="none">
-          <filter id="noiseFilter">
-            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-        </svg>
-      </div>
+      {/* Static Noise Texture */}
+      <div 
+        className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-screen" 
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+      />
 
       {/* Ambient Pulsing Glow */}
       <motion.div
@@ -104,7 +100,7 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
                   strokeLinejoin="round"
                   pathLength="1"
                   className="path-draw"
-                  style={{ animationDuration: "1.5s" }}
+                  style={{ animationDuration: "0.6s" }}
                 />
                 {/* Dot */}
                 <path
@@ -113,7 +109,7 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
                   strokeLinejoin="round"
                   strokeWidth={5}
                   className="dot-draw"
-                  style={{ transformOrigin: "142px 48px", animationDelay: "1.2s" }}
+                  style={{ transformOrigin: "142px 48px", animationDelay: "0.5s" }}
                 />
                 {/* Agrawal */}
                 <path
@@ -122,7 +118,7 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
                   strokeLinejoin="round"
                   pathLength="1"
                   className="path-draw"
-                  style={{ animationDuration: "1.8s", animationDelay: "1.2s" }}
+                  style={{ animationDuration: "0.6s", animationDelay: "0.5s" }}
                 />
                 {/* Ending Line 1 */}
                 <path
@@ -131,7 +127,7 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
                   strokeLinejoin="round"
                   pathLength="1"
                   className="path-draw"
-                  style={{ animationDuration: "0.2s", animationDelay: "2.8s" }}
+                  style={{ animationDuration: "0.1s", animationDelay: "1.1s" }}
                 />
                 {/* Ending Line 2 */}
                 <path
@@ -140,7 +136,7 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
                   strokeLinejoin="round"
                   pathLength="1"
                   className="path-draw"
-                  style={{ animationDuration: "0.2s", animationDelay: "2.9s" }}
+                  style={{ animationDuration: "0.1s", animationDelay: "1.1s" }}
                 />
               </g>
             </motion.svg>
@@ -154,7 +150,7 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
                   initial={{ opacity: 0, y: 15, filter: "blur(8px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, y: -10, filter: "blur(8px)" }}
-                  transition={{ duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.4, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {word}
                 </motion.span>

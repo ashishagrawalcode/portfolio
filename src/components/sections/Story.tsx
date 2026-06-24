@@ -89,21 +89,23 @@ export const Story = () => {
         {/* Animated Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)] pointer-events-none" />
 
-        {/* Dynamic Ambient Glows */}
+        {/* Dynamic Ambient Glows (Optimized with Radial Gradients) */}
         <motion.div 
           style={{ 
             opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.6, 0.2]),
             scale: useTransform(scrollYProgress, [0, 1], [0.8, 2]),
             rotate: useTransform(scrollYProgress, [0, 1], [0, 90]),
+            background: 'radial-gradient(ellipse, rgba(139,92,246,0.15) 0%, transparent 70%)'
           }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[40vw] rounded-[100%] bg-accent-violet/[0.05] blur-[100px] pointer-events-none z-0 mix-blend-screen" 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[40vw] rounded-[100%] pointer-events-none z-0" 
         />
         <motion.div 
           style={{ 
             opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.4, 0]),
             scale: useTransform(scrollYProgress, [0, 1], [0.5, 1.5]),
+            background: 'radial-gradient(ellipse, rgba(59,130,246,0.15) 0%, transparent 70%)'
           }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[60vw] rounded-[100%] bg-accent-blue/[0.05] blur-[120px] pointer-events-none z-0 mix-blend-screen" 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[60vw] rounded-[100%] pointer-events-none z-0" 
         />
 
         {/* Section label */}

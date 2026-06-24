@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 
 const skills = [
   { id: "nextjs", name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs/white", color: "rgba(255,255,255,0.1)", radius: 60 },
@@ -50,6 +50,7 @@ export const TechOrbs = () => {
 
   const [isClient, setIsClient] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const isInView = useInView(containerRef, { margin: "200px" });
 
   useEffect(() => {
     setIsClient(true);
@@ -200,13 +201,18 @@ export const TechOrbs = () => {
         }
       }
 
-      animationFrameId = requestAnimationFrame(updatePhysics);
+      // Only request next frame if container is in view
+      if (isInView) {
+        animationFrameId = requestAnimationFrame(updatePhysics);
+      }
     };
 
-    updatePhysics();
+    if (isInView) {
+      updatePhysics();
+    }
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, []);
+  }, [isInView, isMobile]);
 
   // Pointer Interaction Handlers
   const handlePointerDown = (e: React.PointerEvent, id: string) => {

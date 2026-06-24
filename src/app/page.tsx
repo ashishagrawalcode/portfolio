@@ -1,23 +1,38 @@
+import dynamic from "next/dynamic";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { Story } from "@/components/sections/Story";
-import { ProjectUniverse } from "@/components/sections/ProjectUniverse";
-import { Timeline } from "@/components/sections/Timeline";
-import { DesignGallery } from "@/components/sections/DesignGallery";
-import { TechOrbs } from "@/components/sections/TechOrbs";
-import { ClubsAndTeams } from "@/components/sections/ClubsAndTeams";
-import { FinalCTA } from "@/components/sections/FinalCTA";
+import { LazyComponent } from "@/components/layout/LazyComponent";
+
+const ProjectUniverse = dynamic(() => import("@/components/sections/ProjectUniverse").then((mod) => mod.ProjectUniverse));
+const Timeline = dynamic(() => import("@/components/sections/Timeline").then((mod) => mod.Timeline));
+const DesignGallery = dynamic(() => import("@/components/sections/DesignGallery").then((mod) => mod.DesignGallery));
+const TechOrbs = dynamic(() => import("@/components/sections/TechOrbs").then((mod) => mod.TechOrbs));
+const ClubsAndTeams = dynamic(() => import("@/components/sections/ClubsAndTeams").then((mod) => mod.ClubsAndTeams));
+const FinalCTA = dynamic(() => import("@/components/sections/FinalCTA").then((mod) => mod.FinalCTA));
 
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-bg-primary text-text-primary selection:bg-accent-violet/30">
       <PageWrapper>
         <Story />
-        <ProjectUniverse />
-        <Timeline />
-        <DesignGallery />
-        <TechOrbs />
-        <ClubsAndTeams />
-        <FinalCTA />
+        <LazyComponent minHeight="100vh">
+          <ProjectUniverse />
+        </LazyComponent>
+        <LazyComponent minHeight="100vh">
+          <Timeline />
+        </LazyComponent>
+        <LazyComponent minHeight="100vh">
+          <DesignGallery />
+        </LazyComponent>
+        <LazyComponent minHeight="100vh">
+          <TechOrbs />
+        </LazyComponent>
+        <LazyComponent minHeight="100vh">
+          <ClubsAndTeams />
+        </LazyComponent>
+        <LazyComponent minHeight="100vh">
+          <FinalCTA />
+        </LazyComponent>
       </PageWrapper>
     </main>
   );

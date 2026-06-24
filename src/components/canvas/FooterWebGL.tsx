@@ -3,6 +3,7 @@
 import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { useInView } from "framer-motion";
 
 const WavePoints = () => {
   const pointsRef = useRef<THREE.Points>(null);
@@ -155,12 +156,16 @@ const WavePoints = () => {
 };
 
 export const FooterWebGL = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "200px" });
+
   return (
-    <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-bg-primary touch-none pointer-events-auto">
+    <div ref={containerRef} className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-bg-primary touch-none pointer-events-auto">
       {/* Dark overlay gradient to blend into the section above */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-bg-primary to-transparent z-10 pointer-events-none" />
       
       <Canvas 
+        frameloop={isInView ? "always" : "demand"}
         camera={{ position: [0, 10, 20], fov: 75 }}
         className="w-full h-full"
         dpr={1}

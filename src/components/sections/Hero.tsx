@@ -3,7 +3,9 @@
 import { useRef } from "react";
 import { ScrollIndicator } from "../ui/ScrollIndicator";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { HeroScene } from "../canvas/HeroScene";
+
+import { HeroBackground } from "../ui/HeroBackground";
+import { FloatingElements } from "../ui/FloatingElements";
 
 export const Hero = ({
   mousePointer,
@@ -30,8 +32,8 @@ export const Hero = ({
   return (
     <section id="hero" ref={containerRef} className="relative h-screen">
       <div className="h-screen w-full overflow-hidden flex flex-col items-center justify-center">
-        {/* 3D Scene Background */}
-        <HeroScene mousePointer={mousePointer} />
+        {/* Animated Aurora Background */}
+        <HeroBackground mousePointer={mousePointer} />
 
         {/* Hero Typography */}
         <motion.div
@@ -56,7 +58,7 @@ export const Hero = ({
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display font-black text-6xl leading-[0.9] tracking-tighter text-white uppercase mb-4 sm:text-[5.5rem] md:text-8xl lg:text-[9rem] md:mb-8 relative z-10"
+              className="font-display font-black text-6xl leading-[0.9] tracking-tighter uppercase mb-4 sm:text-[5.5rem] md:text-8xl lg:text-[9rem] md:mb-8 relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/50"
             >
               Ashish <br/> Agrawal.
             </motion.h1>
@@ -82,8 +84,36 @@ export const Hero = ({
             >
               Second-year B.Tech student with a keen interest in exploring the full technology stack. Dedicated to building a strong foundation across web development and core programming concepts.
             </motion.p>
+
+            {/* Premium CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-10 flex flex-wrap items-center gap-4 relative z-20"
+            >
+              <a 
+                href="#projects" 
+                className="group relative px-8 py-3 rounded-full bg-white text-black font-medium tracking-wide overflow-hidden transition-transform hover:scale-105 active:scale-95"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-accent-violet/20 to-accent-blue/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="relative z-10 flex items-center gap-2">
+                  View Projects
+                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </span>
+              </a>
+              <a 
+                href="#contact" 
+                className="group px-8 py-3 rounded-full bg-white/5 border border-white/10 text-white font-medium tracking-wide backdrop-blur-sm hover:bg-white/10 transition-colors"
+              >
+                Contact Me
+              </a>
+            </motion.div>
           </div>
         </motion.div>
+
+        {/* Floating Elements on the Right */}
+        <FloatingElements />
 
         {/* Premium Scroll Indicator */}
         <motion.div

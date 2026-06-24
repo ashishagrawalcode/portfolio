@@ -117,7 +117,7 @@ export const ProjectUniverse = () => {
           </div>
           <div className="hidden md:flex items-center gap-4 text-white/20 font-heading text-sm">
             <span>Hover to explore</span>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
               <path d="M12 5v14M19 12l-7 7-7-7" />
             </svg>
           </div>
