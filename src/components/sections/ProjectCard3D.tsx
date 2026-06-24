@@ -57,7 +57,7 @@ export const ProjectCard3D = ({ project, index, total }: ProjectCard3DProps) => 
         rotateY,
         transformStyle: "preserve-3d",
       }}
-      className="relative w-[82vw] md:w-[380px] flex-shrink-0 cursor-pointer group"
+      className="relative w-[82vw] md:w-[380px] flex-shrink-0 cursor-none group"
     >
       <div className="relative w-full rounded-2xl overflow-hidden border border-white/[0.05] bg-gradient-to-b from-white/[0.04] to-white/[0.01] backdrop-blur-xl transition-all duration-500 hover:border-white/[0.12] hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]">
         {/* Spotlight */}
@@ -101,11 +101,11 @@ export const ProjectCard3D = ({ project, index, total }: ProjectCard3DProps) => 
             </motion.div>
           </div>
           {/* Year */}
-          <div className="absolute top-4 right-5 text-[10px] font-mono text-white/20 tracking-widest">
+          <div className="absolute top-4 right-5 text-[10px] font-heading text-white/20 tracking-widest">
             {project.year}
           </div>
           {/* Index */}
-          <div className="absolute bottom-4 left-5 text-[10px] font-mono text-white/15 tracking-wider">
+          <div className="absolute bottom-4 left-5 text-[10px] font-heading text-white/15 tracking-wider">
             {String(index + 1).padStart(2, "0")}
           </div>
         </div>

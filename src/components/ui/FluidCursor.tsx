@@ -17,9 +17,9 @@ export const FluidCursor = ({ mousePointer }: { mousePointer: React.MutableRefOb
       const targetX = mousePointer.current.x;
       const targetY = mousePointer.current.y;
 
-      // Sharp cursor follows tightly
-      cursorX += (targetX - cursorX) * 0.15;
-      cursorY += (targetY - cursorY) * 0.15;
+      // Sharp cursor perfectly syncs with mouse for instant feel
+      cursorX = targetX;
+      cursorY = targetY;
 
       // Glow follows more lazily
       glowX += (targetX - glowX) * 0.06;
@@ -54,6 +54,7 @@ export const FluidCursor = ({ mousePointer }: { mousePointer: React.MutableRefOb
         ref={glowRef}
         className="fixed top-0 left-0 w-64 h-64 bg-accent-violet rounded-full pointer-events-none z-[90] opacity-15 blur-[80px]"
       />
+      <style dangerouslySetInnerHTML={{ __html: `* { cursor: none !important; } html, body { cursor: none !important; }` }} />
     </>
   );
 };

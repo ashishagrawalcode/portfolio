@@ -28,6 +28,7 @@
 
   * {
     @apply border-white/10;
+    cursor: none !important;
   }
 
   body {

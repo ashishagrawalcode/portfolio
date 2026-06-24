@@ -66,13 +66,13 @@ export const ClubsAndTeams = () => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-accent-violet/10 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-[90rem] mx-auto px-6 md:px-12 relative z-10">
-        <div className="flex flex-col items-center text-center mb-24">
+        <div className="flex flex-col items-center text-center mb-16 md:mb-24">
           <motion.p
             initial={{ opacity: 0, y: 40, filter: "blur(6px)", scale: 0.9 }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-accent-violet text-[10px] font-heading tracking-[0.3em] uppercase mb-4"
+            className="text-accent-violet text-xs font-heading tracking-[0.3em] uppercase mb-4"
           >
             Beyond Code
           </motion.p>
@@ -81,7 +81,7 @@ export const ClubsAndTeams = () => {
             whileInView={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)", scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="text-5xl md:text-7xl font-display font-bold text-white mb-6"
+            className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white mb-6"
           >
             Clubs & Teams
           </motion.h2>
@@ -94,54 +94,50 @@ export const ClubsAndTeams = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="flex flex-col border-t border-white/10">
           {clubs.map((club, i) => (
             <motion.div
               key={club.name}
-              custom={i}
-              variants={cardReveal as any}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="group relative"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="group relative border-b border-white/10 py-8 md:py-12 flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden cursor-none"
             >
-              {/* Outer glow effect on hover */}
+              {/* Background Highlight */}
               <div 
-                className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl z-0"
-                style={{ backgroundColor: club.color, opacity: 0.15 }}
+                className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 z-0"
+                style={{ backgroundColor: club.color }}
+              />
+              
+              {/* Left Accent Line */}
+              <div 
+                className="absolute left-0 top-0 bottom-0 w-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
+                style={{ backgroundColor: club.color }}
               />
 
-              <div className="relative z-10 h-full p-8 md:p-10 rounded-2xl bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] group-hover:border-white/[0.15] group-hover:bg-white/[0.04] transition-all duration-700 overflow-hidden flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-                
-                {/* Diagonal color slash */}
-                <div 
-                  className="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-[60px] opacity-20 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none"
-                  style={{ backgroundColor: club.color }}
-                />
+              <div className="relative z-10 w-full md:w-1/3 pl-0 group-hover:pl-4 transition-all duration-500">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white/80 group-hover:text-white transition-colors duration-500">
+                  {club.name}
+                </h3>
+              </div>
 
-                <div className="relative z-10 mb-12">
-                  <div className="flex items-center justify-between mb-8">
-                    <span 
-                      className="text-[10px] font-heading tracking-[0.3em] uppercase"
-                      style={{ color: club.color }}
-                    >
-                      {club.role}
-                    </span>
-                    <span className="text-[10px] font-mono text-white/20 tracking-wider">
-                      {club.period}
-                    </span>
-                  </div>
+              <div className="relative z-10 w-full md:w-1/4 flex flex-col gap-1">
+                <span 
+                  className="text-xs font-heading tracking-widest uppercase transition-colors duration-500 text-white/40 group-hover:opacity-100"
+                  style={{ color: club.color }}
+                >
+                  {club.role}
+                </span>
+                <span className="text-xs font-heading text-white/30 tracking-widest">
+                  {club.period}
+                </span>
+              </div>
 
-                  <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-4 group-hover:-translate-y-1 transition-transform duration-500">
-                    {club.name}
-                  </h3>
-                  
-                  <p className="text-white/40 text-sm md:text-base leading-relaxed group-hover:text-white/60 transition-colors duration-500">
-                    {club.description}
-                  </p>
-                </div>
-                
-                <div className="relative z-10 w-full h-[1px] bg-gradient-to-r from-white/10 to-transparent group-hover:from-white/30 transition-colors duration-500" />
+              <div className="relative z-10 w-full md:w-5/12">
+                <p className="text-white/50 text-sm md:text-base leading-relaxed group-hover:text-white/80 transition-colors duration-500">
+                  {club.description}
+                </p>
               </div>
             </motion.div>
           ))}

@@ -20,7 +20,7 @@ export default function Home() {
   const mousePointer = useMousePosition();
 
   return (
-    <main className="relative min-h-screen bg-bg-primary text-text-primary selection:bg-accent-violet/30 overflow-hidden">
+    <main className="relative min-h-screen bg-bg-primary text-text-primary selection:bg-accent-violet/30">
       <AnimatePresence mode="wait">
         {loading && (
           <SignatureLoader onComplete={() => setLoading(false)} />

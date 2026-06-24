@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { HeroScene } from "../canvas/HeroScene";
-import { signaturePaths, SIGNATURE_VIEWBOX } from "../loader/signature-path";
 
 export const Hero = ({
   mousePointer,
@@ -33,83 +32,52 @@ export const Hero = ({
         {/* 3D Scene Background */}
         <HeroScene mousePointer={mousePointer} />
 
-        {/* Faint Signature Watermark */}
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] z-0"
-          animate={{ scale: [0.95, 1.05] }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "easeInOut",
-          }}
-        >
-          <svg
-            viewBox={SIGNATURE_VIEWBOX}
-            fill="none"
-            stroke="currentColor"
-            className="w-[90vw] md:w-[70vw] max-w-4xl text-white"
-          >
-            {signaturePaths.map((path, idx) => (
-              <path key={idx} d={path} strokeWidth="1" />
-            ))}
-          </svg>
-        </motion.div>
-
         {/* Hero Typography */}
         <motion.div
           style={{ y: titleY, opacity: titleOpacity }}
-          className="relative z-10 flex flex-col items-center justify-center text-center px-4"
+          className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-center h-full pt-20"
         >
-          <h1 className="font-display font-black text-[15vw] md:text-[11vw] leading-[0.85] tracking-tight text-white uppercase flex flex-col items-center">
-            <div className="flex overflow-hidden">
-              {firstName.map((char, index) => (
-                <motion.span
-                  key={`first-${index}`}
-                  initial={{ y: "120%", opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{
-                    duration: 1,
-                    delay: 0.05 + index * 0.06,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="inline-block"
-                >
-                  {char}
-                </motion.span>
-              ))}
-            </div>
-            <div className="flex overflow-hidden">
-              {lastName.map((char, index) => (
-                <motion.span
-                  key={`last-${index}`}
-                  initial={{ y: "120%", opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{
-                    duration: 1,
-                    delay: 0.25 + index * 0.06,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="inline-block"
-                >
-                  {char}
-                </motion.span>
-              ))}
-            </div>
-          </h1>
+          <div className="max-w-4xl">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-accent-violet font-heading text-sm md:text-base mb-6 tracking-widest uppercase"
+            >
+              Digital Portfolio // 2026
+            </motion.p>
+            
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display font-black text-6xl md:text-8xl lg:text-[9rem] leading-[0.9] tracking-tight text-white uppercase mb-8"
+            >
+              Ashish <br/> Agrawal.
+            </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-4 md:mt-6 flex flex-col md:flex-row items-center gap-2 md:gap-3 text-xs md:text-sm font-heading font-light text-text-secondary tracking-[0.2em] md:tracking-[0.25em] uppercase"
-          >
-            <span>Founder</span>
-            <span className="hidden md:inline-block w-1 h-1 rounded-full bg-accent-violet" />
-            <span>Full Stack Developer</span>
-            <span className="hidden md:inline-block w-1 h-1 rounded-full bg-accent-blue" />
-            <span>Product Designer</span>
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-wrap items-center gap-4 md:gap-6 text-sm md:text-lg font-heading font-light text-text-secondary tracking-wider"
+            >
+              <span className="text-white">Founder</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-violet" />
+              <span className="text-white">Full Stack Developer</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-blue" />
+              <span className="text-white">Product Designer</span>
+            </motion.div>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-8 max-w-lg text-white/60 text-sm md:text-base leading-relaxed font-light"
+            >
+              I build high-performance web applications and design intuitive interfaces. Focused on creating digital experiences that feel seamless, fast, and human.
+            </motion.p>
+          </div>
         </motion.div>
 
         {/* Scroll Indicator */}

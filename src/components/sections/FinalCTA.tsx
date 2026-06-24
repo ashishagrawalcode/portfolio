@@ -161,10 +161,10 @@ export const FinalCTA = () => {
       {/* Bottom Bar */}
       <div className="border-t border-white/[0.04]">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-[10px] text-white/20 font-mono tracking-wider">
+          <p className="text-[10px] text-white/20 font-heading tracking-wider">
             © 2024 Ashish Agrawal
           </p>
-          <p className="text-[10px] text-white/20 font-mono tracking-wider">
+          <p className="text-[10px] text-white/20 font-heading tracking-wider">
             Designed &amp; Developed with obsession
           </p>
         </div>

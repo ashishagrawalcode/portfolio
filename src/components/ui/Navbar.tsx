@@ -87,7 +87,7 @@ export const Navbar = () => {
           damping: 30 
         }}
         className={`relative flex items-center justify-center p-2 rounded-[32px] bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden ${
-          !isExpanded ? "cursor-pointer" : ""
+          !isExpanded ? "cursor-none" : ""
         }`}
       >
         <AnimatePresence mode="popLayout" initial={false}>
@@ -98,7 +98,8 @@ export const Navbar = () => {
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(4px)" }}
               transition={{ duration: 0.3 }}
-              className="grid grid-cols-3 md:flex md:flex-row items-center gap-1 p-1 md:p-0 w-[95vw] md:w-auto max-w-[400px] md:max-w-none"
+              className="flex items-center gap-1 p-1 md:p-0 max-w-[85vw] md:max-w-none overflow-x-auto [&::-webkit-scrollbar]:hidden"
+              style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
             >
               {navItems.map((item, i) => {
                 const isActive = activeIndex === i;
@@ -109,7 +110,7 @@ export const Navbar = () => {
                       e.stopPropagation();
                       scrollTo(item.href);
                     }}
-                    className={`relative z-10 w-full md:w-auto px-1 md:px-4 py-2.5 md:py-1.5 rounded-full text-[11px] md:text-[13px] font-heading tracking-wide transition-colors duration-300 flex items-center justify-center ${
+                    className={`relative z-10 shrink-0 px-3 md:px-4 py-2.5 md:py-1.5 rounded-full text-[12px] md:text-[13px] font-heading tracking-wide transition-colors duration-300 flex items-center justify-center ${
                       isActive ? "text-white" : "text-white/40 hover:text-white/70"
                     }`}
                   >

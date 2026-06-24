@@ -15,9 +15,12 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
   const handleComplete = useCallback(onComplete, [onComplete]);
 
   useEffect(() => {
+    // Lock scroll while loading
+    document.body.style.overflow = "hidden";
+    
     if (phase === "signature") {
-      // Signature takes about 3.3 seconds to finish drawing (19 paths * 0.15s delay + 0.4s duration)
-      const t = setTimeout(() => setPhase("welcome"), 3800);
+      // Signature takes ~3.2 seconds total to draw with delays
+      const t = setTimeout(() => setPhase("welcome"), 3200);
       return () => clearTimeout(t);
     }
     if (phase === "welcome") {
@@ -25,8 +28,12 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
       return () => clearTimeout(t);
     }
     if (phase === "done") {
+      document.body.style.overflow = ""; // Unlock scroll
       handleComplete();
     }
+    
+    // Cleanup on unmount just in case
+    return () => { document.body.style.overflow = ""; };
   }, [phase, handleComplete]);
 
   return (
@@ -34,11 +41,30 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-bg-primary"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-bg-primary overflow-hidden"
     >
+      {/* Noise Texture */}
+      <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none mix-blend-screen">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" preserveAspectRatio="none">
+          <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+        </svg>
+      </div>
+
+      {/* Ambient Pulsing Glow */}
+      <motion.div
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.15, 0.25, 0.15],
+        }}
+        transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[40vh] bg-accent-violet/30 blur-[120px] rounded-[100%] pointer-events-none z-0"
+      />
 
       {/* Signature Draw */}
-      <div className="relative flex flex-col items-center justify-center w-full max-w-4xl px-8">
+      <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-8">
         <AnimatePresence mode="wait">
           {phase === "signature" && (
             <motion.svg
@@ -46,44 +72,80 @@ export const SignatureLoader = ({ onComplete }: SignatureLoaderProps) => {
               viewBox={SIGNATURE_VIEWBOX}
               fill="none"
               stroke="currentColor"
-              className="w-full h-auto text-white/90 stroke-[2.5]"
+              className="w-full h-auto text-white/90 stroke-[2.5] -rotate-3 scale-110"
               initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              animate={{ opacity: 1, scale: 1.15, filter: "blur(0px)" }}
               exit={{ opacity: 0, scale: 1.5, filter: "blur(20px)" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              {signaturePaths.map((path, idx) => (
-                <motion.path
-                  key={idx}
-                  d={path}
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ 
-                    duration: 0.4, 
-                    ease: "easeInOut",
-                    delay: idx * 0.15 
-                  }}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{
-                    filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))",
-                  }}
-                />
-              ))}
+              {/* Ashish */}
+              <motion.path
+                d={signaturePaths[0]}
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}
+              />
+              {/* Dot */}
+              <motion.path
+                d={signaturePaths[1]}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.2, delay: 1.2 }}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={5} // Slightly thicker for the dot
+                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))", transformOrigin: "142px 48px" }}
+              />
+              {/* Agrawal */}
+              <motion.path
+                d={signaturePaths[2]}
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 1.8, delay: 1.2, ease: "easeInOut" }}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}
+              />
+              {/* Ending Line 1 */}
+              <motion.path
+                d={signaturePaths[3]}
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.2, delay: 2.8, ease: "easeOut" }}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}
+              />
+              {/* Ending Line 2 */}
+              <motion.path
+                d={signaturePaths[4]}
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.2, delay: 2.9, ease: "easeOut" }}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))" }}
+              />
             </motion.svg>
           )}
 
           {phase === "welcome" && (
-            <motion.div
-              key="welcome"
-              initial={{ opacity: 0, y: 15, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -10, filter: "blur(8px)" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-2xl md:text-4xl font-display italic font-light tracking-widest text-white/80 text-center"
-            >
-              Welcome, Visitor.
-            </motion.div>
+            <div className="flex space-x-3 text-2xl md:text-4xl font-display italic font-light tracking-widest text-white/90 text-center">
+              {"Welcome, Visitor.".split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 15, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -10, filter: "blur(8px)" }}
+                  transition={{ duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </div>
           )}
         </AnimatePresence>
       </div>

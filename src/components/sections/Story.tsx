@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const frames = [
   {
@@ -22,94 +23,102 @@ const frames = [
   },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-};
+const CinematicFrame = ({ frame, index, scrollYProgress }: any) => {
+  // Mapping each frame to a 20% scroll chunk of the 400vh container
+  const trigger = 0.15 + index * 0.2;
+  const startIn = Math.max(0, trigger - 0.05);
+  const endIn = trigger;
+  
+  // Last frame stays visible until the end
+  const startOut = index === frames.length - 1 ? 0.95 : trigger + 0.1;
+  const endOut = index === frames.length - 1 ? 1 : startOut + 0.05;
 
-const textReveal = {
-  hidden: { opacity: 0, y: 120, rotateX: 30, filter: "blur(12px)", scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    rotateX: 0,
-    filter: "blur(0px)",
-    scale: 1,
-    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
-  },
+  const opacity = useTransform(scrollYProgress, [startIn, endIn, startOut, endOut], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [startIn, endIn, startOut, endOut], [0.8, 1, 1, 1.2]);
+  const blur = useTransform(scrollYProgress, [startIn, endIn, startOut, endOut], ["blur(15px)", "blur(0px)", "blur(0px)", "blur(15px)"]);
+
+  return (
+    <motion.div
+      style={{ opacity, scale, filter: blur }}
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl px-6 text-center flex flex-col items-center justify-center pointer-events-none"
+    >
+      <h2
+        className={`font-display font-bold leading-[1.15] whitespace-pre-line mb-6 ${
+          frame.accent ? "text-5xl md:text-7xl lg:text-9xl tracking-tight" : "text-4xl md:text-6xl lg:text-7xl tracking-tight"
+        }`}
+        style={
+          frame.accent
+            ? {
+                background: "linear-gradient(135deg, #8b5cf6, #3b82f6)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }
+            : {
+                background: "linear-gradient(180deg, #ffffff, rgba(255,255,255,0.45))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }
+        }
+      >
+        {frame.text}
+      </h2>
+      {frame.sub && (
+        <p className="text-white/50 text-lg md:text-2xl max-w-2xl leading-relaxed mx-auto font-heading font-light tracking-wide">
+          {frame.sub}
+        </p>
+      )}
+    </motion.div>
+  );
 };
 
 export const Story = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
   return (
-    <section id="story" className="relative bg-bg-primary py-24 md:py-32 overflow-hidden">
-      {/* Ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] rounded-full bg-accent-violet/[0.04] blur-[120px] pointer-events-none" />
+    <section id="story" ref={containerRef} className="relative h-[400vh] bg-bg-primary">
+      {/* Pinned Screen */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
+        
+        {/* Dynamic Ambient Glow */}
+        <motion.div 
+          style={{ 
+            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.8, 0.2]),
+            scale: useTransform(scrollYProgress, [0, 1], [0.8, 1.5]),
+          }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] rounded-full bg-accent-violet/[0.04] blur-[120px] pointer-events-none z-0" 
+        />
 
-      <div className="max-w-4xl mx-auto px-6 md:px-12">
         {/* Section label */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          className="text-accent-violet text-[10px] font-heading tracking-[0.3em] uppercase mb-16 md:mb-24 text-center"
-        >
-          My Story
-        </motion.p>
+        <div className="absolute top-12 md:top-24 w-full text-center z-30 pointer-events-none">
+          <motion.p
+            style={{ opacity: useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]) }}
+            className="text-accent-violet text-[10px] md:text-xs font-heading tracking-[0.3em] uppercase"
+          >
+            My Story
+          </motion.p>
+        </div>
 
-        {/* Frames */}
-        <div className="space-y-20 md:space-y-32">
-          {frames.map((frame, i) => (
-            <motion.div
-              key={i}
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-80px" }}
-              className={`flex flex-col ${i % 2 === 0 ? "items-start text-left" : "items-end text-right"}`}
-            >
-              <motion.h2
-                variants={textReveal as any}
-                className={`font-display font-bold leading-[1.15] whitespace-pre-line mb-4 max-w-2xl ${
-                  frame.accent
-                    ? "text-3xl md:text-5xl lg:text-7xl"
-                    : "text-2xl md:text-4xl lg:text-5xl"
-                }`}
-                style={
-                  frame.accent
-                    ? {
-                        background: "linear-gradient(135deg, #8b5cf6, #3b82f6)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                      }
-                    : {
-                        background: "linear-gradient(180deg, #ffffff, rgba(255,255,255,0.45))",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                      }
-                }
-              >
-                {frame.text}
-              </motion.h2>
-
-              {frame.sub && (
-                <motion.p
-                  variants={textReveal as any}
-                  className="text-white/40 text-sm md:text-base max-w-md leading-relaxed"
-                >
-                  {frame.sub}
-                </motion.p>
-              )}
-
-              {/* Decorative line */}
-              <motion.div
-                variants={textReveal as any}
-                className={`mt-8 h-[1px] w-16 ${frame.accent ? "bg-accent-violet/50" : "bg-white/10"}`}
-              />
-            </motion.div>
+        {/* Cinematic Frames */}
+        <div className="relative w-full h-full z-10">
+          {frames.map((frame, index) => (
+            <CinematicFrame key={index} frame={frame} index={index} scrollYProgress={scrollYProgress} />
           ))}
         </div>
+
+        {/* Progress Indicator */}
+        <motion.div 
+          style={{ opacity: useTransform(scrollYProgress, [0.9, 0.95], [1, 0]) }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 font-heading text-xs tracking-widest uppercase pointer-events-none"
+        >
+          <span>Scroll to uncover</span>
+          <div className="w-[1px] h-8 bg-gradient-to-b from-white/30 to-transparent" />
+        </motion.div>
+
       </div>
     </section>
   );

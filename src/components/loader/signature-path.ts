@@ -1,40 +1,17 @@
-// Stylized cursive SVG path for "Ashish Agrawal"
-// Designed as flowing script lettering with natural pen lifts between words.
-// viewBox should be "0 0 520 120" for proper display.
+// 1. "Ashish" (Continuous flowing path)
+export const pathAshish = "M 65 52 C 55 22, 25 22, 18 52 C 12 85, 25 96, 42 92 C 55 88, 58 48, 62 18 C 65 48, 68 68, 72 82 C 73 76, 62 70, 55 70 C 62 68, 75 68, 84 81 C 88 72, 92 64, 95 64 C 99 68, 101 80, 93 83 C 97 83, 103 80, 108 66 C 115 40, 120 20, 124 18 C 121 18, 115 40, 115 82 C 115 65, 128 63, 130 74 C 131 80, 131 82, 133 82 C 136 82, 138 78, 142 64 C 142 76, 142 82, 145 82 C 148 82, 152 72, 156 64 C 160 68, 162 80, 154 83 C 158 83, 164 80, 170 66 C 177 40, 182 20, 186 18 C 183 18, 177 40, 177 82 C 177 65, 190 63, 192 74 C 193 81, 194 83, 202 79";
 
-export const signaturePaths = [
-  // "A" - sweeping stroke up and back down with crossbar
-  "M 15 95 Q 30 15, 50 15 Q 65 15, 50 95",
-  "M 25 60 L 60 55",
-  // "s" - flowing s-curve
-  "M 65 50 C 70 40, 85 38, 85 48 C 85 58, 65 62, 65 72 C 65 85, 85 82, 88 70",
-  // "h" - vertical stem and arch
-  "M 95 20 L 95 90",
-  "M 95 55 C 100 42, 115 42, 118 58 L 118 90",
-  // "i" - short stroke and dot
-  "M 128 50 L 128 90",
-  "M 128 35 L 129 36",
-  // "s" - second s
-  "M 138 50 C 143 40, 158 38, 158 48 C 158 58, 138 62, 138 72 C 138 85, 158 82, 161 70",
-  // "h" - second h
-  "M 168 20 L 168 90",
-  "M 168 55 C 173 42, 188 42, 191 58 L 191 90",
-  // "A" - capital A for Agrawal
-  "M 220 95 Q 235 15, 255 15 Q 270 15, 255 95",
-  "M 230 60 L 265 55",
-  // "g" - descending g
-  "M 275 50 C 275 40, 295 40, 295 50 L 295 90 C 295 108, 275 110, 270 100",
-  // "r" - short r
-  "M 305 50 L 305 90",
-  "M 305 60 C 310 45, 322 45, 325 52",
-  // "a" - round a
-  "M 345 50 C 335 50, 330 60, 335 72 C 340 85, 350 85, 350 70 L 350 48 L 350 90",
-  // "w" - w shape
-  "M 358 50 L 368 90 L 378 55 L 388 90 L 398 50",
-  // "a" - second a
-  "M 418 50 C 408 50, 403 60, 408 72 C 413 85, 423 85, 423 70 L 423 48 L 423 90",
-  // "l" - final l with flourish
-  "M 435 20 L 435 85 C 435 95, 445 95, 450 88"
-];
+// 2. The dot on the "i"
+export const pathDot = "M 142 48 L 142.5 48";
 
-export const SIGNATURE_VIEWBOX = "0 0 470 120";
+// 3. "Agrawal" (Continuous flowing path)
+export const pathAgrawal = "M 285 52 C 275 22, 240 22, 232 52 C 225 85, 238 96, 258 92 C 272 88, 276 48, 280 18 C 283 48, 286 68, 290 82 C 291 76, 280 70, 273 70 C 280 68, 295 68, 305 65 C 298 65, 295 74, 298 82 C 302 85, 308 77, 308 67 C 308 77, 307 108, 302 115 C 295 115, 290 100, 310 75 C 313 70, 316 61, 314 58 C 313 55, 318 55, 320 57 C 324 59, 328 58, 332 60 C 334 61, 332 75, 335 83 C 338 83, 342 76, 348 65 C 342 65, 339 76, 342 82 C 346 85, 351 77, 351 69 C 351 77, 351 82, 353 83 C 356 83, 360 74, 364 65 C 365 77, 366 83, 370 83 C 373 83, 375 74, 376 69 C 377 77, 378 83, 382 83 C 386 83, 388 72, 390 68 C 392 70, 395 66, 402 65 C 396 65, 393 76, 396 82 C 400 85, 405 77, 405 69 C 405 77, 405 82, 407 83 C 412 83, 420 40, 426 18 C 423 18, 417 40, 417 80 C 417 88, 425 85, 436 79";
+
+// 4. Ending Line 1
+export const pathEndLine1 = "M 445 88 L 465 82";
+
+// 5. Ending Line 2
+export const pathEndLine2 = "M 450 96 L 470 90";
+
+export const signaturePaths = [pathAshish, pathDot, pathAgrawal, pathEndLine1, pathEndLine2];
+export const SIGNATURE_VIEWBOX = "0 0 480 130";

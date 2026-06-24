@@ -27,7 +27,7 @@ export const MeshBlob = ({ mousePointer }: { mousePointer: React.MutableRefObjec
   });
 
   return (
-    <Icosahedron ref={meshRef} args={[2.5, 20]} position={[0, 0, 0]}>
+    <Icosahedron ref={meshRef} args={[2.5, 12]} position={[0, 0, 0]}>
       <MeshDistortMaterial
         ref={materialRef}
         color="#8B5CF6"
