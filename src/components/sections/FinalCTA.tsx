@@ -1,8 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { MagneticButton } from "../ui/MagneticButton";
-import { FooterWebGL } from "../canvas/FooterWebGL";
+
+const FooterWebGL = dynamic(() => import("../canvas/FooterWebGL").then((mod) => mod.FooterWebGL), {
+  ssr: false,
+});
 
 const socialLinks = [
   { label: "GitHub", href: "https://github.com/ashishagrawalcode" },

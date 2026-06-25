@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
@@ -43,6 +43,13 @@ interface HeroProps {
 
 export function Hero({ mousePointer }: HeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [mountScene, setMountScene] = useState(false);
+
+  useEffect(() => {
+    // Defer heavy WebGL parsing to unblock initial paint
+    const timer = setTimeout(() => setMountScene(true), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -62,7 +69,7 @@ export function Hero({ mousePointer }: HeroProps) {
     >
       {/* ── Background: fBM Purplish Smoky WebGL ── */}
       <motion.div className="absolute inset-0" style={{ opacity: sceneOpacity }}>
-        <HeroScene pointer={mousePointer?.current ?? undefined} />
+        {mountScene && <HeroScene pointer={mousePointer?.current ?? undefined} />}
       </motion.div>
 
       {/* Protective dark scrim to guarantee text contrast against bright smoke peaks */}
