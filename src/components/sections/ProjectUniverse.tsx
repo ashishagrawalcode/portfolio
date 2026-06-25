@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import { projects } from "@/constants/projects";
 
 // ─── Schematic placeholder — intentional, not broken ──────────────────────────
@@ -55,12 +56,12 @@ function ProjectPreview({ project }: { project: typeof projects[number] }) {
       {/* Image or schema */}
       <div className="relative h-[52%] w-full overflow-hidden border-b border-white/[0.05]">
         {project.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={project.imageUrl}
             alt={`${project.title} preview`}
-            loading="lazy"
-            className="h-full w-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover"
           />
         ) : (
           <SchemaBg color={project.color} title={project.title} />
@@ -250,12 +251,12 @@ export function ProjectUniverse() {
             >
               <div className="relative h-48 w-full">
                 {projects[hoveredIdx].imageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={projects[hoveredIdx].imageUrl}
                     alt={`${projects[hoveredIdx].title} preview`}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
                   />
                 ) : (
                   <SchemaBg color={projects[hoveredIdx].color} title={projects[hoveredIdx].title} />

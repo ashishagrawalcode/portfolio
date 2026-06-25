@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 // ── Design pieces data ─────────────────────────────────────────────────────────
@@ -42,7 +43,7 @@ const PIECES = [
   },
   {
     id: 8, label: "Typography",
-    img: "https://images.unsplash.com/photo-1446071103084-c257b5f70672?q=80&w=800&auto=format&fit=crop",
+    img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop",
     aspect: "landscape",
   },
 ];
@@ -66,12 +67,12 @@ function GalleryCard({ item }: { item: (typeof PIECES)[number] }) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Image */}
-      <img
+      <Image
         src={item.img}
         alt={item.label}
-        loading="lazy"
-        decoding="async"
-        className="h-full w-full object-cover transition-transform duration-700 ease-out"
+        fill
+        sizes="(max-width: 768px) 300px, 400px"
+        className="object-cover transition-transform duration-700 ease-out"
         style={{ transform: hovered ? "scale(1.08)" : "scale(1.0)" }}
       />
 
