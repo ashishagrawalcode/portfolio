@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Space_Grotesk } from "next/font/google";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-
-const playfair = Playfair_Display({
+// Cormorant Garamond — luxury editorial serif for display headings
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-playfair",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-cormorant",
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
-const spaceGrotesk = Space_Grotesk({
+// Manrope — geometric, clean sans-serif for body + UI
+const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-space",
-  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-manrope",
+  weight: ["200", "300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://ashishagrawal.com", // update to final domain later
+    url: "https://ashishagrawal.com",
     title: "Ashish Agrawal | CS Undergrad & Full Stack Developer",
     description: "Portfolio of Ashish Agrawal - CS Undergrad at BMU, Aspiring Full Stack Developer building FinTech & Web Solutions.",
     siteName: "Ashish Agrawal Portfolio",
@@ -72,7 +73,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${inter.variable} ${playfair.variable} ${spaceGrotesk.variable}`}
+      className={`dark ${cormorant.variable} ${manrope.variable}`}
     >
       <body className="bg-bg-primary text-text-primary antialiased">
         <Providers>{children}</Providers>

@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useInView } from "framer-motion";
 
-export const LazyComponent = ({ children, minHeight = "100vh" }: { children: React.ReactNode, minHeight?: string }) => {
+export const LazyComponent = ({ children, minHeight = "100vh", id }: { children: React.ReactNode, minHeight?: string, id?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { margin: "500px", once: true });
   const [hasRendered, setHasRendered] = useState(false);
@@ -15,7 +15,7 @@ export const LazyComponent = ({ children, minHeight = "100vh" }: { children: Rea
   }, [isInView, hasRendered]);
 
   return (
-    <div ref={ref} style={{ minHeight: hasRendered ? 'auto' : minHeight }} className="w-full relative">
+    <div id={id} ref={ref} style={{ minHeight: hasRendered ? 'auto' : minHeight }} className="w-full relative">
       {hasRendered ? children : null}
     </div>
   );

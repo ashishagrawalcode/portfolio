@@ -64,6 +64,12 @@ export const Navbar = () => {
       window.location.href = href;
       return;
     }
+    
+    if (pathname !== "/") {
+      window.location.href = "/" + href;
+      return;
+    }
+
     const el = document.querySelector(href);
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });

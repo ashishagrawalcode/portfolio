@@ -1,0 +1,79 @@
+ASHISH AGRAWALPRODUCT BUILDER & FRONTEND DEVELOPER
+Siliguri, India | +91 8649842862
+agrawalashish815@gmail.com
+github.com/ashishagrawalcode
+linkedin.com/in/ashish-agrawal-18a18b361
+ashishagrawalcode.github.io
+EDUCATION
+BML Munjal University Gurugram, India
+Bachelor of Technology (B.Tech) – Computer Science & Engineering 2025 – 2029
+Maintained an academic track record with an 8.71 / 10.0 CGPA across foundational engineering coursework.
+Awarded 25% Merit Scholarship at BML Munjal University based on competitive academic performance thresholds.
+TECHNICAL SKILLS
+Languages: C, C++, Python, JavaScript, TypeScript, SQL
+Frontend: React.js, Next.js, HTML5, CSS3, Tailwind CSS, Responsive Design, Framer Motion
+Backend & Database:Next.js API Routes, Server Actions, PostgreSQL, Prisma ORM, Firebase, Neon Tech
+Tools & Platforms:Git, GitHub, Figma, VS Code, Vercel, Auth.js, NextAuth, TanStack Query, Zustand
+Concepts: Database Design, Product Development, Authentication Systems, State Management, Progressive Web Apps
+(PWA)
+PROJECTS
+ArthiX V2 – Financial Literacy Platform | Live Demo Ongoing
+Next.js, TypeScript, PostgreSQL, Prisma ORM, Auth.js, Tailwind CSS, TurboRepo, Neon TechFounder & Developer
+Architected a scalable full-stack system designed for students and young adults leveraging financial simulations, learning modules, and
+behavioral tracking.
+Built production-oriented platform workflows for financial decision-making simulations and state-managed educational progression.
+Implemented high-performance server-side operations utilizing PostgreSQL and Prisma ORM for seamless relational data mapping.
+Spearheaded end-to-end product strategy, feature roadmap planning, UI/UX architecture, and responsive dark-theme engineering.
+Ledzer – Business Operating System | Live Demo | GitHub June 2026
+Next.js 14, TypeScript, Prisma, PostgreSQL, IndexedDB, TanStack Query, Zustand, NextAuth, PWAFounder & Developer
+Engineered a full-stack business operating platform handling invoicing, inventory, and accounting workflows within a rapid 30-hour
+development crunch.
+Designed an offline-first client architecture using IndexedDB data synchronization workflows and local data persistence mechanisms.
+Developed granular metrics reporting pipelines including automated P&L statements, Balance Sheets, Cash Flow trackers, and dynamic
+dashboard analytics.
+Integrated localized PDF/Excel invoice export mechanics alongside optimized state management flows via Zustand and TanStack Query.
+ArthiX V1 – Financial Literacy MVP | Live Link 2025
+Next.js, React.js, Firebase Database, Google OAuth, Tailwind CSS, Nodemailer Founder & Developer
+Developed and successfully deployed the initial public MVP of ArthiX to evaluate student interactions with gamified financial modules.
+Implemented Google OAuth authentication sequences and secure backend email validation routing via Nodemailer integrations.
+Validated complete core functional architecture including simulation sandboxes and modular learning milestones.
+Personal Portfolio Website v2.0 | Live Link 2026
+HTML5, CSS3, Native JavaScript, UI Design Sole Developer
+Designed and deployed a highly interactive, responsive dark-themed portfolio incorporating a dynamic living mesh background asset.
+Programmed a custom masonry layout engine for a smart photography gallery with zero-latency categorization filters.
+LEADERSHIP & CAMPUS EXPERIENCE
+Design Team Contributor 2025 – 2026
+Student Editorial Board, ACM BMU, TEDxBMU, BMUMUN, Ranbhoomi, 67th Milestone BML Munjal University
+Conceptualized and produced 30+ comprehensive design assets including high-fidelity posters, identity lanyards, and event branding kits.
+Maintained strict brand guideline architectures across cross-functional university organizations to execute physical and digital visual
+campaigns.
+Leveraged Figma workflows to prototype user interfaces, spatial layouts, and production-ready print vectors.
+Technical Team Member 2025 – 2026
+Nexus BMU Student Chapter & R&D Cell BML Munjal University
+Collaborated in open-source engineering workshops, research roundtables, and regular code reviews to optimize project cycles.
+ADDITIONAL PROJECT EXPERIENCE
+SwasthSathi – Telehealth Platform Concept September 2025
+Smart India Hackathon (SIH) Preparation UX Contributor & Product Architect
+Mapped user journeys and accessibility wireframes optimized specifically for remote healthcare discovery and ASHA worker interfaces.
+Co-authored detailed functional specification documentation governing system architectures for doctor routing and appointment pipelines.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 

@@ -27,4 +27,3 @@ export const initLenis = () => {
   return lenis;
 };
 
-export const getLenis = () => lenis;

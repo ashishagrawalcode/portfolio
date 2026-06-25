@@ -1,4 +1,20 @@
-export const projects = [
+export interface Project {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  tech: string[];
+  image: string;
+  link: string;
+  color: string;
+  year: string;
+  /** Optional: direct URL to a screenshot/preview image for ProjectUniverse */
+  imageUrl?: string;
+  /** Optional: canonical live URL shown as "View Live →" link */
+  liveUrl?: string;
+}
+
+export const projects: Project[] = [
   {
     id: "arthix",
     title: "ArthiX",
@@ -7,6 +23,7 @@ export const projects = [
     tech: ["Next.js", "Framer Motion", "Firebase", "Tailwind"],
     image: "/projects/arthix.png",
     link: "https://arthix.in",
+    liveUrl: "https://arthix.in",
     color: "#8B5CF6",
     year: "2026",
   },
@@ -18,6 +35,7 @@ export const projects = [
     tech: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Tailwind"],
     image: "/projects/ledzer.png",
     link: "https://ledzer.vercel.app",
+    liveUrl: "https://ledzer.vercel.app",
     color: "#3B82F6",
     year: "2026",
   },
@@ -29,6 +47,7 @@ export const projects = [
     tech: ["React 18", "Tailwind CSS v4", "Framer Motion", "Canvas API"],
     image: "/projects/voughtmart.png",
     link: "https://lnkd.in/g56RBFTn",
+    liveUrl: "https://lnkd.in/g56RBFTn",
     color: "#10B981",
     year: "2026",
   },
@@ -40,6 +59,7 @@ export const projects = [
     tech: ["Next.js", "AI Orchestration", "Design"],
     image: "/projects/eternite.png",
     link: "https://lnkd.in/gTDdHsGV",
+    liveUrl: "https://lnkd.in/gTDdHsGV",
     color: "#D4AF37",
     year: "2025",
   },
@@ -55,3 +75,4 @@ export const projects = [
     year: "2025",
   },
 ];
+

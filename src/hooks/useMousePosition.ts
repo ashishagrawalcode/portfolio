@@ -13,12 +13,10 @@ export const useMousePosition = () => {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      mouse.current = {
-        x: e.clientX,
-        y: e.clientY,
-        normalizedX: (e.clientX / window.innerWidth) * 2 - 1,
-        normalizedY: -(e.clientY / window.innerHeight) * 2 + 1,
-      };
+      mouse.current.x = e.clientX;
+      mouse.current.y = e.clientY;
+      mouse.current.normalizedX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.normalizedY = -(e.clientY / window.innerHeight) * 2 + 1;
     };
 
     window.addEventListener("mousemove", handleMouseMove);

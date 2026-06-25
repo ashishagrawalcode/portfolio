@@ -15,9 +15,10 @@
 
   --color-accent-gold: #d4af37;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-playfair), Georgia, serif;
-  --font-heading: var(--font-space), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-heading: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
 }
 
 @layer base {
@@ -80,5 +81,33 @@
   * {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  /* Marquee animation for DesignGallery */
+  @keyframes marquee-ltr {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes marquee-rtl {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+  .marquee-ltr {
+    animation: marquee-ltr 32s linear infinite;
+  }
+  .marquee-rtl {
+    animation: marquee-rtl 28s linear infinite;
+  }
+  .marquee-track:hover .marquee-ltr,
+  .marquee-track:hover .marquee-rtl {
+    animation-play-state: paused;
+  }
+
+  /* ambient glow helper */
+  .ambient-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(139,92,246,0.09) 0%, transparent 70%);
   }
 }

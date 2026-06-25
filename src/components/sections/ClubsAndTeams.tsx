@@ -94,32 +94,36 @@ export const ClubsAndTeams = () => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-accent-violet/10 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-[90rem] mx-auto px-6 md:px-12 relative z-10">
-        <div className="flex flex-col items-center text-center mb-16 md:mb-24">
+        <div className="mb-12 flex flex-col justify-between gap-3 md:mb-16 md:flex-row md:items-end">
+          <div>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="mb-2 font-heading text-[10px] font-medium tracking-[0.3em] uppercase text-accent-violet"
+            >
+              Beyond Code
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+              className="font-display text-4xl font-semibold text-text-primary md:text-5xl lg:text-6xl"
+            >
+              Clubs &amp; Teams.
+            </motion.h2>
+          </div>
           <motion.p
-            initial={{ opacity: 0, y: 40, filter: "blur(6px)", scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-accent-violet text-xs font-heading tracking-[0.3em] uppercase mb-4"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="max-w-[200px] font-sans text-xs font-light leading-relaxed text-text-tertiary"
           >
-            Beyond Code
+            Roles held across university clubs and events.
           </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 80, rotateX: 20, filter: "blur(12px)", scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)", scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white mb-6"
-          >
-            Clubs & Teams
-          </motion.h2>
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-            className="w-12 h-[1px] bg-white/20"
-          />
         </div>
 
         <div className="flex flex-col border-t border-white/10">
@@ -130,7 +134,7 @@ export const ClubsAndTeams = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="group relative border-b border-white/10 py-8 md:py-12 flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden cursor-none"
+              className="group relative border-b border-white/10 py-5 md:py-7 flex flex-col md:flex-row md:items-center justify-between gap-4 overflow-hidden cursor-none"
             >
               {/* Background Highlight */}
               <div 
@@ -144,26 +148,26 @@ export const ClubsAndTeams = () => {
                 style={{ backgroundColor: club.color }}
               />
 
-              <div className="relative z-10 w-full md:w-1/3 pl-0 group-hover:pl-4 transition-all duration-500">
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white/80 group-hover:text-white transition-colors duration-500">
+              <div className="relative z-10 min-w-0 flex-1 pl-0 group-hover:pl-4 transition-all duration-500">
+                <h3 className="truncate font-display text-2xl font-semibold text-text-primary/80 transition-colors duration-500 group-hover:text-text-primary md:text-3xl lg:text-4xl">
                   {club.name}
                 </h3>
               </div>
 
-              <div className="relative z-10 w-full md:w-1/4 flex flex-col gap-1">
-                <span 
-                  className="text-xs font-heading tracking-widest uppercase transition-colors duration-500 text-white/40 group-hover:opacity-100"
+              <div className="relative z-10 w-full flex-shrink-0 md:w-1/4 flex flex-col gap-1">
+                <span
+                  className="font-heading text-[10px] font-medium tracking-[0.25em] uppercase transition-colors duration-500"
                   style={{ color: club.color }}
                 >
                   {club.role}
                 </span>
-                <span className="text-xs font-heading text-white/30 tracking-widest">
+                <span className="font-mono text-xs text-text-tertiary">
                   {club.period}
                 </span>
               </div>
 
               <div className="relative z-10 w-full md:w-5/12">
-                <p className="text-white/50 text-sm md:text-base leading-relaxed group-hover:text-white/80 transition-colors duration-500">
+                <p className="font-sans text-sm font-light leading-relaxed text-text-secondary transition-colors duration-500 group-hover:text-text-primary/80">
                   {club.description}
                 </p>
               </div>

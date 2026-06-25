@@ -11,8 +11,6 @@ const socialLinks = [
 
 const footerLinks = [
   { label: "Resume", href: "/resume" },
-  { label: "Blog", href: "#" },
-  { label: "Uses", href: "#" },
 ];
 
 export const FinalCTA = () => {
@@ -92,7 +90,7 @@ export const FinalCTA = () => {
       <div className="relative z-10 bg-bg-primary/80 backdrop-blur-xl border-t border-white/[0.05]">
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent-violet/30 to-transparent" />
         
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-8 md:py-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8">
             
             {/* Brand Column */}
@@ -185,7 +183,7 @@ export const FinalCTA = () => {
       <div className="border-t border-white/[0.04] relative z-10 bg-bg-primary/60 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-[10px] text-white/20 font-heading tracking-wider">
-            © 2024 Ashish Agrawal
+            © 2025 Ashish Agrawal
           </p>
           <p className="text-[10px] text-white/20 font-heading tracking-wider">
             Designed &amp; Developed with obsession
