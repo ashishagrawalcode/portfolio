@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
 import { signaturePaths } from "../loader/signature-path";
 
 const navItems = [
@@ -13,10 +13,12 @@ const navItems = [
   { label: "Arsenal", href: "#arsenal" },
   { label: "Contact", href: "#contact" },
   { label: "Resume", href: "/resume" },
+  { label: "Design", href: "/design" },
 ];
 
 export const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -52,21 +54,22 @@ export const Navbar = () => {
   });
 
   useEffect(() => {
-    if (pathname === "/resume") {
-      const resumeIndex = navItems.findIndex((item) => item.href === "/resume");
-      if (resumeIndex !== -1) setActiveIndex(resumeIndex);
+    if (pathname !== "/") {
+      const activeIdx = navItems.findIndex((item) => item.href === pathname);
+      // eslint-disable-next-line
+      if (activeIdx !== -1) setActiveIndex(activeIdx);
     }
   }, [pathname]);
 
   const scrollTo = (href: string) => {
     setIsOpen(false);
     if (href.startsWith("/")) {
-      window.location.href = href;
+      router.push(href);
       return;
     }
-    
+
     if (pathname !== "/") {
-      window.location.href = "/" + href;
+      router.push("/" + href);
       return;
     }
 
@@ -80,12 +83,12 @@ export const Navbar = () => {
     <div className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100] flex justify-center pointer-events-none w-full">
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
-        animate={{ 
-          y: 0, 
+        animate={{
+          y: 0,
           opacity: 1,
           width: isOpen ? "95vw" : "160px",
           height: isOpen ? "52px" : "48px",
-          borderRadius: isOpen ? 32 : 40 
+          borderRadius: isOpen ? 32 : 40
         }}
         transition={{ type: "spring", stiffness: 400, damping: 28, mass: 0.8 }}
         style={{ maxWidth: isOpen ? "600px" : "160px" }}
@@ -95,8 +98,8 @@ export const Navbar = () => {
           {/* Closed State - Signature Pill */}
           <motion.button
             aria-label="Open Navigation Menu"
-            animate={{ 
-              opacity: isOpen ? 0 : 1, 
+            animate={{
+              opacity: isOpen ? 0 : 1,
               scale: isOpen ? 0.8 : 1,
             }}
             transition={{ duration: 0.2 }}
@@ -123,9 +126,9 @@ export const Navbar = () => {
 
           {/* Open State - Nav Menu */}
           <motion.div
-            animate={{ 
-              opacity: isOpen ? 1 : 0, 
-              scale: isOpen ? 1 : 0.95 
+            animate={{
+              opacity: isOpen ? 1 : 0,
+              scale: isOpen ? 1 : 0.95
             }}
             transition={{ duration: 0.2, delay: isOpen ? 0.1 : 0 }}
             className={`absolute inset-0 flex items-center px-1.5 md:px-2 w-full h-full ${!isOpen ? 'pointer-events-none' : ''}`}
@@ -143,9 +146,8 @@ export const Navbar = () => {
                       e.stopPropagation();
                       scrollTo(item.href);
                     }}
-                    className={`relative z-10 shrink-0 px-4 md:px-5 h-full rounded-full text-[13px] md:text-[14px] font-heading tracking-wide transition-colors duration-300 flex items-center justify-center ${
-                      isActive ? "text-white" : "text-white/40 hover:text-white/70"
-                    }`}
+                    className={`relative z-10 shrink-0 px-4 md:px-5 h-full rounded-full text-[13px] md:text-[14px] font-heading tracking-wide transition-colors duration-300 flex items-center justify-center ${isActive ? "text-white" : "text-white/40 hover:text-white/70"
+                      }`}
                   >
                     {isActive && (
                       <motion.div

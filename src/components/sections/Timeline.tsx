@@ -90,7 +90,7 @@ const TimelineCardPinned = ({ item, index, scrollYProgress }: any) => {
   return (
     <motion.div
       style={{ opacity, y, scale, filter: blur, rotateX, transformPerspective: 1000 }}
-      className="absolute top-[28%] md:top-[32%] left-6 right-6 md:left-1/2 md:-translate-x-1/2 md:w-[600px] max-h-[55vh] overflow-y-auto p-6 md:p-8 rounded-3xl flex flex-col z-20 shadow-[0_30px_60px_rgba(0,0,0,0.6)] bg-bg-secondary/60 backdrop-blur-3xl border border-white/10 group"
+      className="absolute top-[35%] md:top-[32%] left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[480px] max-h-[50vh] overflow-y-auto p-5 md:p-8 rounded-3xl flex flex-col z-20 shadow-[0_30px_60px_rgba(0,0,0,0.6)] bg-bg-secondary/60 backdrop-blur-3xl border border-white/10 group"
     >
       {/* Animated Glowing Border on Active */}
       <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none overflow-hidden">
@@ -98,18 +98,18 @@ const TimelineCardPinned = ({ item, index, scrollYProgress }: any) => {
       </div>
       {/* Inner glass layer to mask the glowing border underneath the content */}
       <div className="absolute inset-[1px] bg-bg-secondary/90 rounded-[23px] pointer-events-none z-[-1]" />
-      
+
       <div className="relative z-10">
-        <span className="text-accent-violet text-xs md:text-sm font-heading tracking-widest mb-1 md:mb-2 block">
+        <span className="text-accent-violet text-[10px] md:text-xs font-heading tracking-widest mb-1 md:mb-2 block uppercase">
           {item.year}
         </span>
-        <h3 className="text-xl md:text-2xl font-heading font-semibold text-white mb-1">
+        <h3 className="text-lg md:text-2xl font-display font-semibold text-white mb-1">
           {item.title}
         </h3>
-        <h4 className="text-xs md:text-sm text-white/50 font-heading mb-3 block">
+        <h4 className="text-[10px] md:text-xs text-white/50 font-heading mb-3 block uppercase tracking-wide">
           {item.org}
         </h4>
-        <p className="font-sans font-light text-text-secondary text-base md:text-lg leading-relaxed">
+        <p className="font-sans font-light text-text-secondary text-sm md:text-base leading-relaxed">
           {item.description}
         </p>
       </div>
@@ -161,7 +161,7 @@ export const Timeline = () => {
         </div>
 
         {/* Center Canvas for Signature */}
-        <div className="relative w-full max-w-[1200px] h-[20vh] md:h-[25vh] flex items-center justify-center px-4 flex-shrink-0 mt-8 md:mt-8">
+        <div className="relative w-full max-w-[800px] h-[15vh] md:h-[18vh] flex items-center justify-center px-4 flex-shrink-0 mt-6 md:mt-8">
           {/* Faint Outline */}
           <svg
             className="absolute w-full h-auto opacity-[0.03] pointer-events-none"

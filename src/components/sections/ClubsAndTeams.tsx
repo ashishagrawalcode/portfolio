@@ -142,32 +142,35 @@ export const ClubsAndTeams = () => {
                 style={{ backgroundColor: club.color }}
               />
               
-              {/* Left Accent Line */}
+              {/* Left Accent Line — shows on hover for desktop, always subtle on mobile */}
               <div 
-                className="absolute left-0 top-0 bottom-0 w-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
+                className="absolute bottom-0 left-0 top-0 z-10 w-[2px] opacity-30 transition-opacity duration-500 md:opacity-0 md:group-hover:opacity-100"
                 style={{ backgroundColor: club.color }}
               />
 
-              <div className="relative z-10 min-w-0 flex-1 pl-0 group-hover:pl-4 transition-all duration-500">
-                <h3 className="truncate font-display text-2xl font-semibold text-text-primary/80 transition-colors duration-500 group-hover:text-text-primary md:text-3xl lg:text-4xl">
+              <div className="relative z-10 min-w-0 flex-1 pl-3 transition-all duration-500 md:pl-0 md:group-hover:pl-4">
+                <h3 className="font-display text-2xl font-semibold leading-tight text-text-primary/90 transition-colors duration-500 md:truncate md:text-3xl md:text-text-primary/80 md:group-hover:text-text-primary lg:text-4xl">
                   {club.name}
                 </h3>
               </div>
 
-              <div className="relative z-10 w-full flex-shrink-0 md:w-1/4 flex flex-col gap-1">
+              {/* Role and Period */}
+              <div className="relative z-10 mt-1 flex w-full flex-shrink-0 flex-row items-center gap-3 pl-3 md:mt-0 md:w-1/4 md:flex-col md:items-start md:gap-1 md:pl-0">
                 <span
-                  className="font-heading text-[10px] font-medium tracking-[0.25em] uppercase transition-colors duration-500"
+                  className="font-heading text-[9px] font-medium tracking-[0.2em] uppercase transition-colors duration-500 md:text-[10px] md:tracking-[0.25em]"
                   style={{ color: club.color }}
                 >
                   {club.role}
                 </span>
+                <span className="hidden h-1 w-1 rounded-full bg-white/20 md:hidden" />
                 <span className="font-mono text-xs text-text-tertiary">
                   {club.period}
                 </span>
               </div>
 
-              <div className="relative z-10 w-full md:w-5/12">
-                <p className="font-sans text-sm font-light leading-relaxed text-text-secondary transition-colors duration-500 group-hover:text-text-primary/80">
+              {/* Description */}
+              <div className="relative z-10 w-full pl-3 pt-1 md:w-5/12 md:pl-0 md:pt-0">
+                <p className="font-sans text-[13px] font-light leading-relaxed text-text-secondary transition-colors duration-500 md:text-sm md:group-hover:text-text-primary/80">
                   {club.description}
                 </p>
               </div>

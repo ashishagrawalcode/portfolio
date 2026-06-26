@@ -7,7 +7,6 @@ const ProjectUniverse = dynamic(() => import("@/components/sections/ProjectUnive
 const Timeline = dynamic(() => import("@/components/sections/Timeline").then((mod) => mod.Timeline));
 const TechOrbs = dynamic(() => import("@/components/sections/TechOrbs").then((mod) => mod.TechOrbs));
 const ClubsAndTeams = dynamic(() => import("@/components/sections/ClubsAndTeams").then((mod) => mod.ClubsAndTeams));
-const DesignGallery = dynamic(() => import("@/components/sections/DesignGallery").then((mod) => mod.DesignGallery));
 const FinalCTA = dynamic(() => import("@/components/sections/FinalCTA").then((mod) => mod.FinalCTA));
 
 export default function Home() {
@@ -26,10 +25,6 @@ export default function Home() {
         </LazyComponent>
         <LazyComponent minHeight="100vh">
           <ClubsAndTeams />
-        </LazyComponent>
-        {/* DesignGallery now sits directly above FinalCTA */}
-        <LazyComponent id="design" minHeight="100vh">
-          <DesignGallery />
         </LazyComponent>
         <LazyComponent id="contact" minHeight="100vh">
           <FinalCTA />

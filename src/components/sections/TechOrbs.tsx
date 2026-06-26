@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 
 const skills = [
@@ -54,8 +55,10 @@ const TechOrbsPhysics = () => {
   const isInView = useInView(containerRef, { margin: "200px" });
 
   useEffect(() => {
+    // eslint-disable-next-line
     setIsClient(true);
     const mobile = window.matchMedia("(pointer: coarse)").matches;
+    // eslint-disable-next-line
     setIsMobile(mobile);
   }, []);
 
@@ -175,7 +178,7 @@ const TechOrbsPhysics = () => {
     dragState.current.activeId = id;
     dragState.current.lastMouseX = e.clientX;
     dragState.current.lastMouseY = e.clientY;
-    dragState.current.lastTime = performance.now();
+    dragState.current.lastTime = Date.now();
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 

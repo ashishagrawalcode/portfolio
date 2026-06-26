@@ -2,108 +2,279 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 // ── Design pieces data ─────────────────────────────────────────────────────────
 const PIECES = [
   {
-    id: 1, label: "Brand Identity",
-    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
-    aspect: "portrait",
+    id: 1,
+    label: "Brand Identity",
+    category: "Branding",
+    year: "2025",
+    tags: ["Logo", "Visual System"],
+    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
+    size: "large",
   },
   {
-    id: 2, label: "UI Dashboard",
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
-    aspect: "landscape",
+    id: 2,
+    label: "UI Dashboard",
+    category: "Product",
+    year: "2026",
+    tags: ["UI Design", "Dashboard"],
+    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+    size: "medium",
   },
   {
-    id: 3, label: "Mobile App",
-    img: "https://images.unsplash.com/photo-1607252656733-fd7458eb0b45?q=80&w=600&auto=format&fit=crop",
-    aspect: "portrait",
+    id: 3,
+    label: "Mobile App",
+    category: "Product",
+    year: "2025",
+    tags: ["Mobile", "UX"],
+    img: "https://images.unsplash.com/photo-1607252656733-fd7458eb0b45?q=80&w=800&auto=format&fit=crop",
+    size: "tall",
   },
   {
-    id: 4, label: "Web Design",
-    img: "https://images.unsplash.com/photo-1507238692062-5a04ce4bfde6?q=80&w=800&auto=format&fit=crop",
-    aspect: "landscape",
+    id: 4,
+    label: "Hackathon Poster",
+    category: "Print",
+    year: "2025",
+    tags: ["Poster", "Event"],
+    img: "https://images.unsplash.com/photo-1541462608143-67571c6738dd?q=80&w=800&auto=format&fit=crop",
+    size: "small",
   },
   {
-    id: 5, label: "Poster Series",
-    img: "https://images.unsplash.com/photo-1541462608143-67571c6738dd?q=80&w=600&auto=format&fit=crop",
-    aspect: "portrait",
+    id: 5,
+    label: "Club Branding",
+    category: "Branding",
+    year: "2026",
+    tags: ["Identity", "Club"],
+    img: "https://images.unsplash.com/photo-1493421419110-74f4e85ba126?q=80&w=1000&auto=format&fit=crop",
+    size: "medium",
   },
   {
-    id: 6, label: "Social Media",
-    img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop",
-    aspect: "landscape",
+    id: 6,
+    label: "Social Media Kit",
+    category: "Social",
+    year: "2026",
+    tags: ["Instagram", "Templates"],
+    img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1200&auto=format&fit=crop",
+    size: "small",
   },
   {
-    id: 7, label: "Event Branding",
-    img: "https://images.unsplash.com/photo-1493421419110-74f4e85ba126?q=80&w=600&auto=format&fit=crop",
-    aspect: "portrait",
+    id: 7,
+    label: "Web Landing",
+    category: "Product",
+    year: "2026",
+    tags: ["Web Design", "Hero"],
+    img: "https://images.unsplash.com/photo-1507238692062-5a04ce4bfde6?q=80&w=1200&auto=format&fit=crop",
+    size: "large",
   },
   {
-    id: 8, label: "Typography",
-    img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop",
-    aspect: "landscape",
+    id: 8,
+    label: "Typography Study",
+    category: "Print",
+    year: "2025",
+    tags: ["Type", "Editorial"],
+    img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1200&auto=format&fit=crop",
+    size: "tall",
+  },
+  {
+    id: 9,
+    label: "Fest Identity",
+    category: "Branding",
+    year: "2025",
+    tags: ["Event", "Identity"],
+    img: "https://images.unsplash.com/photo-1569451358682-e2d32f5a1be9?q=80&w=1000&auto=format&fit=crop",
+    size: "medium",
   },
 ];
 
-// Duplicate for seamless loop
-const ROW_1 = [...PIECES, ...PIECES];
-const ROW_2 = [...[...PIECES].reverse(), ...[...PIECES].reverse()];
+const CATEGORIES = ["All", "Branding", "Product", "Print", "Social"];
 
-// ── Single marquee card ────────────────────────────────────────────────────────
-function GalleryCard({ item }: { item: (typeof PIECES)[number] }) {
+type Piece = (typeof PIECES)[number];
+
+// ── Single gallery item ─────────────────────────────────────────────────────────
+function GalleryItem({
+  item,
+  index,
+}: {
+  item: Piece;
+  index: number;
+}) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div
-      className="relative mx-2 flex-shrink-0 cursor-none overflow-hidden rounded-xl"
-      style={{
-        width: item.aspect === "portrait" ? "200px" : "300px",
-        height: "240px",
-      }}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay: (index % 3) * 0.1, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="group relative w-full overflow-hidden rounded-xl cursor-none"
+      style={{
+        aspectRatio:
+          item.size === "tall"
+            ? "3/4"
+            : item.size === "large"
+            ? "16/10"
+            : item.size === "small"
+            ? "4/3"
+            : "4/3",
+      }}
     >
       {/* Image */}
       <Image
         src={item.img}
         alt={item.label}
         fill
-        sizes="(max-width: 768px) 300px, 400px"
-        className="object-cover transition-transform duration-700 ease-out"
-        style={{ transform: hovered ? "scale(1.08)" : "scale(1.0)" }}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        className="object-cover transition-transform duration-[1.8s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.06]"
       />
 
-      {/* Overlay — always present, darkens more on hover */}
-      <div
-        className="absolute inset-0 transition-all duration-500"
-        style={{
-          background: hovered
-            ? "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)"
-            : "linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%)",
-        }}
-      />
+      {/* Base vignette */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-70 transition-opacity duration-700 group-hover:opacity-90" />
 
-      {/* Label */}
-      <div
-        className="absolute bottom-0 left-0 right-0 px-4 pb-4 transition-all duration-500"
-        style={{ transform: hovered ? "translateY(0)" : "translateY(4px)", opacity: hovered ? 1 : 0.7 }}
-      >
-        <span className="font-heading text-[10px] font-medium tracking-[0.25em] uppercase text-white/90">
-          {item.label}
+      {/* Top meta — always visible */}
+      <div className="absolute left-4 top-4 flex items-center gap-2">
+        <span className="rounded-full border border-white/20 bg-black/30 px-2.5 py-0.5 font-heading text-[9px] font-medium tracking-[0.2em] uppercase text-white/80 backdrop-blur-sm">
+          {item.category}
         </span>
       </div>
 
-      {/* Top-right arrow — appears on hover */}
+      {/* Year — top right */}
+      <span className="absolute right-4 top-4 font-mono text-[9px] text-white/40">
+        {item.year}
+      </span>
+
+      {/* Bottom content — slides up on hover */}
+      <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
+        {/* Tags — revealed on hover */}
+        <motion.div
+          animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 8 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="mb-3 flex flex-wrap gap-1.5"
+        >
+          {item.tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 font-heading text-[9px] tracking-widest uppercase text-white/70 backdrop-blur-sm"
+            >
+              {tag}
+            </span>
+          ))}
+        </motion.div>
+
+        {/* Title */}
+        <h3 className="font-display text-xl font-semibold leading-tight text-white md:text-2xl">
+          {item.label}
+        </h3>
+
+        {/* View arrow */}
+        <motion.div
+          animate={{ opacity: hovered ? 1 : 0, x: hovered ? 0 : -10 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="mt-3 flex items-center gap-2"
+        >
+          <span className="h-px w-8 bg-white/60" />
+          <span className="font-heading text-[10px] uppercase tracking-[0.25em] text-white/80">
+            View
+          </span>
+        </motion.div>
+      </div>
+
+      {/* Full overlay gradient on hover for depth */}
       <motion.div
-        animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.8 }}
-        transition={{ duration: 0.25 }}
-        className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-black/30 backdrop-blur-md"
+        animate={{ opacity: hovered ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(139,92,246,0.08) 0%, transparent 60%)",
+        }}
+      />
+    </motion.div>
+  );
+}
+
+// ── Fullscreen modal preview ─────────────────────────────────────────────────
+function Modal({ item, onClose }: { item: Piece; onClose: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      onClick={onClose}
+      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-2xl"
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative mx-4 max-h-[85vh] w-full max-w-4xl overflow-hidden rounded-2xl border border-white/10"
       >
-        <span className="text-xs text-white">↗</span>
+        <div className="relative aspect-video w-full">
+          <Image
+            src={item.img}
+            alt={item.label}
+            fill
+            sizes="90vw"
+            className="object-cover"
+          />
+        </div>
+        <div className="border-t border-white/10 bg-bg-secondary/95 p-6 backdrop-blur-xl">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="mb-1 font-heading text-[10px] tracking-[0.3em] uppercase text-accent-violet">
+                {item.category} · {item.year}
+              </p>
+              <h3 className="font-display text-2xl font-semibold text-text-primary">
+                {item.label}
+              </h3>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {item.tags.map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-0.5 font-heading text-[10px] tracking-wider uppercase text-text-secondary"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white/80 backdrop-blur-md transition-colors hover:bg-black/70"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
       </motion.div>
+    </motion.div>
+  );
+}
+
+// ── Clickable item wrapper ──────────────────────────────────────────────────────
+function ClickableGalleryItem({
+  item,
+  index,
+  onSelect,
+}: {
+  item: Piece;
+  index: number;
+  onSelect: (item: Piece) => void;
+}) {
+  return (
+    <div onClick={() => onSelect(item)} className="cursor-none">
+      <GalleryItem item={item} index={index} />
     </div>
   );
 }
@@ -111,93 +282,159 @@ function GalleryCard({ item }: { item: (typeof PIECES)[number] }) {
 // ── Section ────────────────────────────────────────────────────────────────────
 export const DesignGallery = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedItem, setSelectedItem] = useState<Piece | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
 
-  const titleY = useTransform(scrollYProgress, [0, 1], [30, -30]);
-  const row1Speed = useTransform(scrollYProgress, [0, 1], ["0px", "-40px"]);
-  const row2Speed = useTransform(scrollYProgress, [0, 1], ["0px", "40px"]);
+  const titleY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+
+  const filtered =
+    activeCategory === "All"
+      ? PIECES
+      : PIECES.filter((p) => p.category === activeCategory);
+
+  // Distribute across 3 columns
+  const col1 = filtered.filter((_, i) => i % 3 === 0);
+  const col2 = filtered.filter((_, i) => i % 3 === 1);
+  const col3 = filtered.filter((_, i) => i % 3 === 2);
 
   return (
     <section
       id="design"
       ref={sectionRef}
-      className="relative overflow-hidden bg-bg-secondary py-24 md:py-36"
+      className="relative min-h-screen overflow-hidden bg-bg-primary px-5 pb-32 pt-24 md:px-12 md:pt-36 lg:px-24"
     >
       {/* Ambient glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[60vw] w-[60vw] max-h-[600px] max-w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-violet/[0.06] blur-[120px]" />
+      <div className="pointer-events-none absolute left-[30%] top-0 h-[50vh] w-[50vh] -translate-y-1/2 rounded-full bg-accent-violet/[0.07] blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-0 right-[20%] h-[40vh] w-[40vh] translate-y-1/4 rounded-full bg-accent-blue/[0.05] blur-[100px]" />
 
-      {/* ── Section header ─────────────────────────────────────────── */}
-      <motion.div
+      {/* ── Section header ────────────────────────────────────────────── */}
+      <motion.header
         style={{ y: titleY }}
-        className="relative z-10 mb-14 flex flex-col justify-between gap-3 px-6 md:mb-20 md:flex-row md:items-end md:px-12"
+        className="relative z-10 mb-16 flex flex-col gap-8 md:mb-20 lg:flex-row lg:items-end lg:justify-between"
       >
-        <div>
-          <p className="mb-2 font-heading text-[10px] font-medium tracking-[0.3em] uppercase text-accent-violet">
-            Creative Work
+        <div className="max-w-2xl">
+          <p className="mb-3 font-heading text-[10px] font-medium tracking-[0.35em] uppercase text-accent-violet">
+            Creative Work · {PIECES.length} Pieces
           </p>
-          <h2 className="font-display text-4xl font-semibold text-text-primary md:text-5xl lg:text-6xl">
-            Design Gallery.
-          </h2>
+          <h1 className="font-display text-5xl font-semibold leading-[1.02] text-text-primary md:text-6xl lg:text-7xl">
+            Design<br />
+            <span className="italic text-text-secondary">Gallery.</span>
+          </h1>
+          <p className="mt-5 max-w-sm font-sans text-sm font-light leading-relaxed text-text-secondary/80">
+            Branding, interfaces, and visual systems crafted for university
+            organizations, hackathons, and personal projects.
+          </p>
         </div>
-        <p className="max-w-[200px] font-sans text-xs font-light leading-relaxed text-text-tertiary">
-          Branding, interfaces, and visual systems built across clubs and events.
-        </p>
-      </motion.div>
 
-      {/* Marquee rows — rows nudge in opposite Y directions on scroll for parallax depth */}
-      <div className="relative z-10 flex flex-col gap-4 overflow-hidden">
+        {/* Stats */}
+        <div className="flex gap-10 lg:flex-col lg:items-end lg:gap-3 lg:text-right">
+          {[
+            { n: "10+", l: "Teams Designed For" },
+            { n: "1+", l: "Years of Design" },
+          ].map(({ n, l }) => (
+            <div key={l} className="flex flex-col gap-0.5">
+              <span className="font-display text-3xl font-semibold text-text-primary">
+                {n}
+              </span>
+              <span className="font-heading text-[9px] tracking-[0.2em] uppercase text-text-secondary/60">
+                {l}
+              </span>
+            </div>
+          ))}
+        </div>
+      </motion.header>
 
-        {/* Row 1 — left to right, nudges up on scroll */}
-        <motion.div
-          style={{ x: row1Speed, y: useTransform(scrollYProgress, [0, 1], ["20px", "-30px"]) }}
-          className="marquee-track"
-        >
-          <div className="marquee-ltr flex items-center">
-            {ROW_1.map((item, i) => (
-              <GalleryCard key={`r1-${i}`} item={item} />
-            ))}
-          </div>
-        </motion.div>
+      {/* ── Category filter ──────────────────────────────────────────── */}
+      <div className="relative z-10 mb-12 flex flex-wrap items-center gap-2 border-b border-white/[0.06] pb-8">
+        {CATEGORIES.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
+            className="relative overflow-hidden rounded-full border px-4 py-1.5 font-heading text-xs font-medium tracking-[0.15em] uppercase transition-all duration-300"
+            style={{
+              borderColor:
+                activeCategory === cat ? "rgba(139,92,246,0.6)" : "rgba(255,255,255,0.08)",
+              color: activeCategory === cat ? "#fff" : "rgba(255,255,255,0.45)",
+              background:
+                activeCategory === cat ? "rgba(139,92,246,0.15)" : "transparent",
+            }}
+          >
+            {cat}
+            {activeCategory === cat && (
+              <motion.span
+                layoutId="category-pill"
+                className="absolute inset-0 rounded-full"
+                style={{ background: "rgba(139,92,246,0.12)" }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+            )}
+          </button>
+        ))}
 
-        {/* Row 2 — right to left, nudges down on scroll */}
-        <motion.div
-          style={{ x: row2Speed, y: useTransform(scrollYProgress, [0, 1], ["-20px", "30px"]) }}
-          className="marquee-track"
-        >
-          <div className="marquee-rtl flex items-center">
-            {ROW_2.map((item, i) => (
-              <GalleryCard key={`r2-${i}`} item={item} />
-            ))}
-          </div>
-        </motion.div>
+        <span className="ml-auto font-mono text-[10px] text-text-secondary/40">
+          {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
+        </span>
       </div>
 
-      {/* ── Bottom stat strip ──────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, delay: 0.2 }}
-        className="relative z-10 mt-14 flex items-center justify-center gap-8 px-6 md:mt-20 md:gap-16"
-      >
-      {["1+", "10+", "2026"].map((stat, i) => {
-        const labels = ["Years of Design Experience", "Teams Designed For", "Current Year"];
-        return (
-          <div key={stat} className="flex flex-col items-center gap-1">
-            <span className="font-display text-3xl font-semibold text-text-primary md:text-4xl">
-              {stat}
-            </span>
-            <span className="font-heading text-[10px] font-medium tracking-[0.2em] uppercase text-text-tertiary">
-              {labels[i]}
-            </span>
+      {/* ── Masonry grid — 3 columns desktop, 2 tablet, 1 mobile ─────── */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeCategory}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.35 }}
+          className="relative z-10 grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3"
+        >
+          {/* Column 1 */}
+          <div className="flex flex-col gap-5 md:gap-6">
+            {col1.map((item, i) => (
+              <ClickableGalleryItem
+                key={item.id}
+                item={item}
+                index={i * 3}
+                onSelect={setSelectedItem}
+              />
+            ))}
           </div>
-        );
-      })}
-      </motion.div>
+
+          {/* Column 2 — offset downward for asymmetry */}
+          <div className="flex flex-col gap-5 md:mt-14 md:gap-6">
+            {col2.map((item, i) => (
+              <ClickableGalleryItem
+                key={item.id}
+                item={item}
+                index={i * 3 + 1}
+                onSelect={setSelectedItem}
+              />
+            ))}
+          </div>
+
+          {/* Column 3 — offset upward for depth */}
+          <div className="flex flex-col gap-5 md:-mt-8 md:gap-6">
+            {col3.map((item, i) => (
+              <ClickableGalleryItem
+                key={item.id}
+                item={item}
+                index={i * 3 + 2}
+                onSelect={setSelectedItem}
+              />
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* ── Modal ─────────────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {selectedItem && (
+          <Modal item={selectedItem} onClose={() => setSelectedItem(null)} />
+        )}
+      </AnimatePresence>
     </section>
   );
 };
