@@ -108,7 +108,7 @@ export const ResumeContent = () => {
       mousePointer.current.normalizedX = (e.clientX / window.innerWidth) * 2 - 1;
       mousePointer.current.normalizedY = -(e.clientY / window.innerHeight) * 2 + 1;
     };
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 

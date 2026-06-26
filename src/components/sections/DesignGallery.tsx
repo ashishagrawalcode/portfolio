@@ -253,6 +253,7 @@ function Modal({ item, onClose }: { item: Piece; onClose: () => void }) {
         {/* Close */}
         <button
           onClick={onClose}
+          aria-label="Close modal"
           className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white/80 backdrop-blur-md transition-colors hover:bg-black/70"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

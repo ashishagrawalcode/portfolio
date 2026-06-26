@@ -34,7 +34,7 @@ const WavePoints = () => {
       globalMouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
       globalMouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
