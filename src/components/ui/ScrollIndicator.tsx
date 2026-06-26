@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 
 export const ScrollIndicator = ({ text = "SCROLL DOWN • EXPLORE MORE • " }: { text?: string }) => {
   const { scrollY } = useScroll();
@@ -13,7 +13,7 @@ export const ScrollIndicator = ({ text = "SCROLL DOWN • EXPLORE MORE • " }: 
       onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
     >
       {/* Rotating SVG Text Ring */}
-      <motion.div 
+      <m.div 
         style={{ rotate }}
         className="absolute inset-0 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity duration-500"
       >
@@ -30,11 +30,11 @@ export const ScrollIndicator = ({ text = "SCROLL DOWN • EXPLORE MORE • " }: 
             </textPath>
           </text>
         </svg>
-      </motion.div>
+      </m.div>
 
       {/* Center Interactive Arrow */}
       <div className="relative w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-white/10 group-hover:scale-110 group-hover:border-accent-violet/50 transition-all duration-300">
-        <motion.svg
+        <m.svg
           animate={{ y: [0, 3, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           width="14"
@@ -48,7 +48,7 @@ export const ScrollIndicator = ({ text = "SCROLL DOWN • EXPLORE MORE • " }: 
           className="text-white group-hover:text-accent-violet transition-colors"
         >
           <path d="M12 5v14M19 12l-7 7-7-7" />
-        </motion.svg>
+        </m.svg>
       </div>
     </div>
   );

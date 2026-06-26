@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { m, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 // ── Design pieces data ─────────────────────────────────────────────────────────
 const PIECES = [
@@ -104,7 +104,7 @@ function GalleryItem({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
@@ -129,7 +129,10 @@ function GalleryItem({
         alt={item.label}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className="object-cover transition-transform duration-[1.8s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.06]"
+        className="object-cover transition-transform duration-[1.8s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.06] will-change-transform"
+        loading="lazy"
+        decoding="async"
+        quality={75}
       />
 
       {/* Base vignette */}
@@ -150,7 +153,7 @@ function GalleryItem({
       {/* Bottom content — slides up on hover */}
       <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
         {/* Tags — revealed on hover */}
-        <motion.div
+        <m.div
           animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 8 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="mb-3 flex flex-wrap gap-1.5"
@@ -163,7 +166,7 @@ function GalleryItem({
               {tag}
             </span>
           ))}
-        </motion.div>
+        </m.div>
 
         {/* Title */}
         <h3 className="font-display text-xl font-semibold leading-tight text-white md:text-2xl">
@@ -171,7 +174,7 @@ function GalleryItem({
         </h3>
 
         {/* View arrow */}
-        <motion.div
+        <m.div
           animate={{ opacity: hovered ? 1 : 0, x: hovered ? 0 : -10 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
           className="mt-3 flex items-center gap-2"
@@ -180,11 +183,11 @@ function GalleryItem({
           <span className="font-heading text-[10px] uppercase tracking-[0.25em] text-white/80">
             View
           </span>
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Full overlay gradient on hover for depth */}
-      <motion.div
+      <m.div
         animate={{ opacity: hovered ? 1 : 0 }}
         transition={{ duration: 0.5 }}
         className="pointer-events-none absolute inset-0"
@@ -193,14 +196,14 @@ function GalleryItem({
             "linear-gradient(135deg, rgba(139,92,246,0.08) 0%, transparent 60%)",
         }}
       />
-    </motion.div>
+    </m.div>
   );
 }
 
 // ── Fullscreen modal preview ─────────────────────────────────────────────────
 function Modal({ item, onClose }: { item: Piece; onClose: () => void }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -208,7 +211,7 @@ function Modal({ item, onClose }: { item: Piece; onClose: () => void }) {
       onClick={onClose}
       className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-2xl"
     >
-      <motion.div
+      <m.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
@@ -257,8 +260,8 @@ function Modal({ item, onClose }: { item: Piece; onClose: () => void }) {
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 }
 
@@ -313,7 +316,7 @@ export const DesignGallery = () => {
       <div className="pointer-events-none absolute bottom-0 right-[20%] h-[40vh] w-[40vh] translate-y-1/4 rounded-full bg-accent-blue/[0.05] blur-[100px]" />
 
       {/* ── Section header ────────────────────────────────────────────── */}
-      <motion.header
+      <m.header
         style={{ y: titleY }}
         className="relative z-10 mb-16 flex flex-col gap-8 md:mb-20 lg:flex-row lg:items-end lg:justify-between"
       >
@@ -347,7 +350,7 @@ export const DesignGallery = () => {
             </div>
           ))}
         </div>
-      </motion.header>
+      </m.header>
 
       {/* ── Category filter ──────────────────────────────────────────── */}
       <div className="relative z-10 mb-12 flex flex-wrap items-center gap-2 border-b border-white/[0.06] pb-8">
@@ -366,7 +369,7 @@ export const DesignGallery = () => {
           >
             {cat}
             {activeCategory === cat && (
-              <motion.span
+              <m.span
                 layoutId="category-pill"
                 className="absolute inset-0 rounded-full"
                 style={{ background: "rgba(139,92,246,0.12)" }}
@@ -383,7 +386,7 @@ export const DesignGallery = () => {
 
       {/* ── Masonry grid — 3 columns desktop, 2 tablet, 1 mobile ─────── */}
       <AnimatePresence mode="wait">
-        <motion.div
+        <m.div
           key={activeCategory}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -426,7 +429,7 @@ export const DesignGallery = () => {
               />
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </AnimatePresence>
 
       {/* ── Modal ─────────────────────────────────────────────────────── */}

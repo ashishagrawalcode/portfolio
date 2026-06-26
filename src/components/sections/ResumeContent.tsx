@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FluidCursor } from "@/components/ui/FluidCursor";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 const SectionHeader = ({ title }: { title: string }) => (
-  <motion.div
+  <m.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-50px" }}
@@ -17,7 +17,7 @@ const SectionHeader = ({ title }: { title: string }) => (
       {title}
     </h2>
     <div className="h-px flex-1 bg-gradient-to-r from-accent-violet/50 to-transparent" />
-  </motion.div>
+  </m.div>
 );
 
 const ResumeCard = ({
@@ -33,7 +33,7 @@ const ResumeCard = ({
   location?: string;
   bullets?: string[];
 }) => (
-  <motion.div
+  <m.div
     initial={{ opacity: 0, y: 30, scale: 0.98 }}
     whileInView={{ opacity: 1, y: 0, scale: 1 }}
     viewport={{ once: true, margin: "-50px" }}
@@ -70,7 +70,7 @@ const ResumeCard = ({
         ))}
       </ul>
     )}
-  </motion.div>
+  </m.div>
 );
 
 const SkillBadge = ({ children }: { children: React.ReactNode }) => (
@@ -82,7 +82,7 @@ const SkillBadge = ({ children }: { children: React.ReactNode }) => (
 const SkillCategory = ({ category, skills }: { category: string; skills: string }) => {
   const skillList = skills.split(",").map(s => s.trim());
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -94,7 +94,7 @@ const SkillCategory = ({ category, skills }: { category: string; skills: string 
           <SkillBadge key={i}>{skill}</SkillBadge>
         ))}
       </div>
-    </motion.div>
+    </m.div>
   );
 };
 
@@ -121,7 +121,7 @@ export const ResumeContent = () => {
 
       <div className="w-full max-w-5xl z-10 flex flex-col relative">
         {/* Header Section */}
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -166,7 +166,7 @@ export const ResumeContent = () => {
               </MagneticButton>
             </a>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Custom Resume Content */}
         <div className="relative w-full">

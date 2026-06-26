@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { m, useScroll, useTransform, MotionValue } from "framer-motion";
 import { projects } from "@/constants/projects";
 
 // ─── Schematic placeholder ──────────────────────────────────────────────────
@@ -48,27 +48,31 @@ const ProjectCard = ({
 
   // Card scales down as subsequent cards scroll over it
   const scale = useTransform(progress, range, [1, targetScale]);
-  // Card darkens slightly as it gets pushed to the back
-  const brightness = useTransform(progress, range, [1, 0.35]);
+  // Card darkens slightly as it gets pushed to the back. We use opacity on a black overlay instead of CSS filter for massive performance gains.
+  const overlayOpacity = useTransform(progress, range, [0, 0.65]);
 
   // Image internal parallax
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ["start end", "start start"],
   });
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.35, 1]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.15, 1]);
 
   return (
     <div ref={cardRef} className="sticky top-0 flex h-screen w-full items-start justify-center">
-      <motion.div
+      <m.div
         style={{
           scale,
-          filter: useTransform(brightness, (b) => `brightness(${b})`),
           // Each card drops slightly lower than the previous one to create a visible deck "stair-step"
-          top: `calc(12vh + ${i * 28}px)`,
+          top: `calc(15vh + ${i * 30}px)`,
         }}
-        className="relative flex h-[78vh] w-[92vw] max-w-7xl origin-top flex-col overflow-hidden rounded-[2.5rem] border border-white/10 bg-bg-secondary/95 shadow-[0_-15px_60px_-15px_rgba(0,0,0,0.8)] backdrop-blur-3xl lg:h-[75vh] lg:flex-row lg:rounded-[3rem]"
+        className="relative flex h-[70vh] w-[90vw] max-w-6xl origin-top flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-bg-secondary shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.8)] lg:h-[65vh] lg:flex-row lg:rounded-[2.5rem] will-change-transform"
       >
+        {/* Hardware-accelerated darkening overlay */}
+        <m.div 
+          className="absolute inset-0 z-50 pointer-events-none bg-black"
+          style={{ opacity: overlayOpacity }}
+        />
         {/* Left Info Panel */}
         <div className="relative z-10 flex h-[55%] w-full flex-col justify-between p-6 lg:h-full lg:w-[45%] lg:p-14">
           {/* Decorative ambient glow */}
@@ -151,17 +155,20 @@ const ProjectCard = ({
         {/* Right Image Panel */}
         <div className="relative h-[45%] w-full overflow-hidden border-t border-white/[0.05] bg-bg-primary lg:h-full lg:w-[55%] lg:border-l lg:border-t-0">
           {project.imageUrl ? (
-            <motion.div style={{ scale: imageScale }} className="relative h-full w-full">
+            <m.div style={{ scale: imageScale }} className="relative h-full w-full">
               <Image
                 src={project.imageUrl}
                 alt={project.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 55vw"
                 className="object-cover"
+                loading="lazy"
+                decoding="async"
+                quality={85}
               />
               <div className="absolute inset-0 hidden bg-gradient-to-l from-transparent via-transparent to-bg-secondary/70 lg:block" />
               <div className="absolute inset-0 bg-gradient-to-t from-bg-secondary/80 via-transparent to-transparent lg:hidden" />
-            </motion.div>
+            </m.div>
           ) : (
             <SchemaBg color={project.color} title={project.title} />
           )}
@@ -176,7 +183,7 @@ const ProjectCard = ({
             </div>
           )}
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 };

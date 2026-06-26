@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 
 const skills = [
   { id: "nextjs", name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs/white", color: "rgba(255,255,255,0.1)", radius: 60 },
@@ -52,7 +52,8 @@ const TechOrbsPhysics = () => {
 
   const [isClient, setIsClient] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const isInView = useInView(containerRef, { margin: "200px" });
+  // Freeze the physics engine the moment the container leaves the viewport to save CPU
+  const isInView = useInView(containerRef, { margin: "0px" });
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -245,9 +246,9 @@ const TechOrbsPhysics = () => {
               transform: `translate(-1000px, -1000px)`,
               willChange: "transform",
             }}
-            className="flex flex-col items-center justify-center rounded-full shadow-[inset_-10px_-10px_20px_rgba(0,0,0,0.5),inset_10px_10px_20px_rgba(255,255,255,0.1),0_20px_30px_rgba(0,0,0,0.5)] border border-white/10 group cursor-none touch-none select-none"
+            className="group flex touch-none select-none flex-col items-center justify-center rounded-full border border-white/10 shadow-lg cursor-none"
           >
-            <div className="absolute top-[10%] left-[20%] w-[30%] h-[20%] bg-white/20 rounded-full blur-[2px] transform -rotate-12 pointer-events-none" />
+            <div className="pointer-events-none absolute left-[20%] top-[10%] h-[20%] w-[30%] -rotate-12 rounded-full bg-white/10" />
             <img
               src={skill.icon}
               alt={`${skill.name} logo`}
@@ -278,14 +279,14 @@ export const TechOrbs = () => {
     <section id="arsenal" className="relative py-32 bg-bg-primary overflow-hidden">
       <div className="max-w-6xl mx-auto px-8 relative z-10">
         <div className="text-center mb-12 pointer-events-none">
-          <motion.p
+          <m.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-accent-violet text-xs font-heading tracking-[0.3em] uppercase mb-3"
           >
             Tech Stack
-          </motion.p>
+          </m.p>
           <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
             Arsenal
           </h2>

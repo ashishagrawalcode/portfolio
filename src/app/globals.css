@@ -28,11 +28,6 @@
     --foreground: var(--color-text-primary);
   }
 
-  * {
-    @apply border-white/10;
-    cursor: none !important;
-  }
-
   body {
     background-color: var(--background);
     background-image: 
@@ -43,6 +38,12 @@
     font-family: var(--font-sans);
     overflow-x: hidden;
     @apply antialiased selection:bg-accent-violet/30 selection:text-white;
+  }
+}
+
+@media (pointer: fine) {
+  body {
+    cursor: none;
   }
 }
 

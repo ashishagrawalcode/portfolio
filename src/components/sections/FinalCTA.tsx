@@ -1,11 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import dynamic from "next/dynamic";
 import { MagneticButton } from "../ui/MagneticButton";
 
 const FooterWebGL = dynamic(() => import("../canvas/FooterWebGL").then((mod) => mod.FooterWebGL), {
   ssr: false,
+  loading: () => <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary to-transparent" />,
 });
 
 const socialLinks = [
@@ -30,16 +31,16 @@ export const FinalCTA = () => {
       <div className="relative py-24 md:py-32 flex items-center justify-center text-center z-10">
 
         <div className="relative z-10 max-w-3xl px-6">
-          <motion.p
+          <m.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="text-accent-violet text-[10px] font-heading tracking-[0.4em] uppercase mb-5"
           >
             What&apos;s Next?
-          </motion.p>
+          </m.p>
 
-          <motion.h2
+          <m.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -48,9 +49,9 @@ export const FinalCTA = () => {
           >
             Let&apos;s Build Something{" "}
             <span className="text-gradient-accent italic">Meaningful.</span>
-          </motion.h2>
+          </m.h2>
 
-          <motion.p
+          <m.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -59,9 +60,9 @@ export const FinalCTA = () => {
           >
             Have a project in mind, or just want to say hello? I&apos;m always
             open to discussing new ideas and opportunities.
-          </motion.p>
+          </m.p>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -86,7 +87,7 @@ export const FinalCTA = () => {
               </svg>
               </MagneticButton>
             </a>
-          </motion.div>
+          </m.div>
         </div>
       </div>
 
@@ -99,7 +100,7 @@ export const FinalCTA = () => {
             
             {/* Brand Column */}
             <div className="md:col-span-6 flex flex-col gap-6">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -110,7 +111,7 @@ export const FinalCTA = () => {
                 <p className="text-text-secondary/70 text-sm md:text-base leading-relaxed max-w-sm">
                   CS Undergrad &amp; Full Stack Developer crafting premium digital experiences.
                 </p>
-              </motion.div>
+              </m.div>
               
               <div className="mt-auto pt-8">
                 <a 
@@ -135,7 +136,7 @@ export const FinalCTA = () => {
               </p>
               <div className="flex flex-col gap-4">
                 {footerLinks.map((link, i) => (
-                  <motion.a
+                  <m.a
                     key={link.label}
                     href={link.href}
                     initial={{ opacity: 0, x: -10 }}
@@ -146,7 +147,7 @@ export const FinalCTA = () => {
                   >
                     <span className="inline-block w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-accent-violet transition-colors" />
                     {link.label}
-                  </motion.a>
+                  </m.a>
                 ))}
               </div>
             </div>
@@ -158,7 +159,7 @@ export const FinalCTA = () => {
               </p>
               <div className="flex flex-col gap-4">
                 {socialLinks.map((link, i) => (
-                  <motion.a
+                  <m.a
                     key={link.label}
                     href={link.href}
                     target="_blank"
@@ -174,7 +175,7 @@ export const FinalCTA = () => {
                     <svg className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-accent-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
-                  </motion.a>
+                  </m.a>
                 ))}
               </div>
             </div>

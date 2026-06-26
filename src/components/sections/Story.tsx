@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { m, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { useRef } from "react";
 import { ScrollIndicator } from "../ui/ScrollIndicator";
 
@@ -52,18 +52,18 @@ const variants = {
   enter: {
     opacity: 0,
     x: 40,
-    filter: "blur(6px)",
+    transform: "translateZ(0)",
   },
   center: {
     opacity: 1,
     x: 0,
-    filter: "blur(0px)",
+    transform: "translateZ(0)",
     transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   },
   exit: {
     opacity: 0,
-    x: -30,
-    filter: "blur(4px)",
+    x: -40,
+    transform: "translateZ(0)",
     transition: { duration: 0.35, ease: [0.4, 0, 1, 1] as [number, number, number, number] },
   },
 };
@@ -112,7 +112,7 @@ export function Story() {
 
         {/* Top progress bar */}
         <div className="absolute top-0 left-0 right-0 z-30 h-[1px] bg-white/[0.04]">
-          <motion.div
+          <m.div
             className="h-full bg-gradient-to-r from-accent-violet to-accent-blue"
             animate={{ width: `${progressPct}%` }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -136,7 +136,7 @@ export function Story() {
                     window.scrollTo({ top: target, behavior: "smooth" });
                   }
                 }}
-                className="transition-all duration-300"
+                className="p-3 -m-3 transition-all duration-300"
                 aria-label={`Go to chapter ${i + 1}`}
               >
                 <div
@@ -167,7 +167,7 @@ export function Story() {
             {/* Left: decorative chapter number + chapter name */}
             <div className="hidden md:flex flex-col items-start">
               <AnimatePresence mode="wait">
-                <motion.div
+                <m.div
                   key={`num-${activeIdx}`}
                   variants={numVariants}
                   initial="enter"
@@ -193,13 +193,13 @@ export function Story() {
                       {entry.tag}
                     </p>
                   </div>
-                </motion.div>
+                </m.div>
               </AnimatePresence>
             </div>
 
             {/* Right: the actual content */}
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={`content-${activeIdx}`}
                 variants={variants}
                 initial="enter"
@@ -233,25 +233,25 @@ export function Story() {
 
                 {/* Year tag */}
                 <div className="mt-8 flex items-center gap-3">
-                  <span className="rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1 font-heading text-[10px] font-medium tracking-[0.25em] uppercase text-text-tertiary">
+                  <span className="rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1 font-heading text-[10px] font-medium tracking-[0.25em] uppercase text-zinc-400">
                     {entry.year}
                   </span>
                   {/* Decorative line */}
                   <div className="h-px flex-1 max-w-[80px] bg-gradient-to-r from-white/10 to-transparent" />
                 </div>
-              </motion.div>
+              </m.div>
             </AnimatePresence>
           </div>
         </div>
 
         {/* ScrollIndicator */}
-        <motion.div
+        <m.div
           animate={{ opacity: activeIdx < LOG.length - 1 ? 1 : 0 }}
           transition={{ duration: 0.4 }}
           className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 sm:bottom-10"
         >
           <ScrollIndicator text="KEEP SCROLLING • " />
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

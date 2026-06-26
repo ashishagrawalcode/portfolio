@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { m, useScroll, useMotionValueEvent } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { signaturePaths } from "../loader/signature-path";
 
@@ -81,7 +81,7 @@ export const Navbar = () => {
 
   return (
     <div className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100] flex justify-center pointer-events-none w-full">
-      <motion.nav
+      <m.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{
           y: 0,
@@ -96,7 +96,7 @@ export const Navbar = () => {
       >
         <div className="relative w-full h-full flex items-center justify-center">
           {/* Closed State - Signature Pill */}
-          <motion.button
+          <m.button
             aria-label="Open Navigation Menu"
             animate={{
               opacity: isOpen ? 0 : 1,
@@ -122,10 +122,10 @@ export const Navbar = () => {
                 />
               ))}
             </svg>
-          </motion.button>
+          </m.button>
 
           {/* Open State - Nav Menu */}
-          <motion.div
+          <m.div
             animate={{
               opacity: isOpen ? 1 : 0,
               scale: isOpen ? 1 : 0.95
@@ -150,7 +150,7 @@ export const Navbar = () => {
                       }`}
                   >
                     {isActive && (
-                      <motion.div
+                      <m.div
                         layoutId="activeNavIndicator"
                         className="absolute inset-[4px] rounded-full bg-white/[0.08] border border-white/[0.06] -z-10 shadow-[inset_0_1px_4px_rgba(255,255,255,0.1)]"
                         transition={{ type: "spring", stiffness: 350, damping: 30 }}
@@ -161,9 +161,9 @@ export const Navbar = () => {
                 );
               })}
             </div>
-          </motion.div>
+          </m.div>
         </div>
-      </motion.nav>
+      </m.nav>
     </div>
   );
 };

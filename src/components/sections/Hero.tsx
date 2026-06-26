@@ -2,11 +2,12 @@
 
 import { useRef, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 
 const HeroScene = dynamic(() => import("@/components/canvas/HeroScene"), {
   ssr: false,
+  loading: () => <div className="absolute inset-0 bg-bg-primary" />,
 });
 
 type MouseRef = React.RefObject<{
@@ -19,7 +20,7 @@ function Reveal({ text, delay = 0 }: { text: string; delay?: number }) {
   return (
     <span className="inline-flex overflow-hidden">
       {text.split("").map((ch, i) => (
-        <motion.span
+        <m.span
           key={i}
           className="inline-block will-change-transform"
           initial={{ y: "105%", opacity: 0 }}
@@ -31,7 +32,7 @@ function Reveal({ text, delay = 0 }: { text: string; delay?: number }) {
           }}
         >
           {ch === " " ? "\u00A0" : ch}
-        </motion.span>
+        </m.span>
       ))}
     </span>
   );
@@ -68,9 +69,9 @@ export function Hero({ mousePointer }: HeroProps) {
       className="relative flex h-[100svh] min-h-[640px] w-full items-center justify-center overflow-hidden bg-bg-primary"
     >
       {/* ── Background: fBM Purplish Smoky WebGL ── */}
-      <motion.div className="absolute inset-0" style={{ opacity: sceneOpacity }}>
+      <m.div className="absolute inset-0" style={{ opacity: sceneOpacity }}>
         {mountScene && <HeroScene pointer={mousePointer?.current ?? undefined} />}
-      </motion.div>
+      </m.div>
 
       {/* Protective dark scrim to guarantee text contrast against bright smoke peaks */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(5,5,10,0.55)_0%,transparent_65%)]" />
@@ -79,12 +80,12 @@ export function Hero({ mousePointer }: HeroProps) {
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[50vw] w-[50vw] max-h-[500px] max-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.02] blur-[120px]" />
 
       {/* ── Main content — Centered & Majestic ── */}
-      <motion.div
+      <m.div
         style={{ opacity: contentOpacity, y: contentY }}
         className="relative z-10 flex w-full max-w-5xl flex-col items-center justify-center px-6 text-center sm:px-10"
       >
         {/* Eyebrow — Switched from purple to neutral silver/white to avoid clashing */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
@@ -95,7 +96,7 @@ export function Hero({ mousePointer }: HeroProps) {
             Design Engineer · Full-stack Dev
           </span>
           <div className="h-px w-6 bg-gradient-to-l from-transparent to-white/40" />
-        </motion.div>
+        </m.div>
 
         {/* Hero Title — Reduced font size for elegant consistency */}
         <h1 className="mt-2 flex flex-wrap justify-center gap-x-4 px-2 select-none">
@@ -114,7 +115,7 @@ export function Hero({ mousePointer }: HeroProps) {
         </h1>
 
         {/* Subtitle */}
-        <motion.p
+        <m.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
@@ -122,10 +123,10 @@ export function Hero({ mousePointer }: HeroProps) {
         >
           Building high-performance FinTech products that actually ship. 
           Bridging the gap between engineering and design.
-        </motion.p>
+        </m.p>
 
         {/* Action Buttons */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.3, ease: [0.16, 1, 0.3, 1] }}
@@ -160,11 +161,11 @@ export function Hero({ mousePointer }: HeroProps) {
           >
             Get In Touch
           </a>
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
 
       {/* Decorative Bottom Left Info */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.6 }}
@@ -173,17 +174,17 @@ export function Hero({ mousePointer }: HeroProps) {
         <p className="font-heading text-[9px] tracking-[0.3em] uppercase text-text-tertiary">
           Class of 2029 <br /> BML Munjal University
         </p>
-      </motion.div>
+      </m.div>
 
       {/* Elegant Scroll Indicator */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.8 }}
         className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20"
       >
         <ScrollIndicator />
-      </motion.div>
+      </m.div>
     </section>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { LazyMotion, domAnimation } from "framer-motion";
 import { initLenis } from "../lib/lenis";
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -9,5 +10,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     initLenis();
   }, []);
 
-  return <>{children}</>;
+  return (
+    <LazyMotion features={domAnimation} strict>
+      {children}
+    </LazyMotion>
+  );
 }

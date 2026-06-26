@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { signaturePaths } from "../loader/signature-path";
 import { ScrollIndicator } from "../ui/ScrollIndicator";
 
@@ -88,7 +88,7 @@ const TimelineCardPinned = ({ item, index, scrollYProgress }: any) => {
   );
 
   return (
-    <motion.div
+    <m.div
       style={{ opacity, y, scale, filter: blur, rotateX, transformPerspective: 1000 }}
       className="absolute top-[35%] md:top-[32%] left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[480px] max-h-[50vh] overflow-y-auto p-5 md:p-8 rounded-3xl flex flex-col z-20 shadow-[0_30px_60px_rgba(0,0,0,0.6)] bg-bg-secondary/60 backdrop-blur-3xl border border-white/10 group"
     >
@@ -113,7 +113,7 @@ const TimelineCardPinned = ({ item, index, scrollYProgress }: any) => {
           {item.description}
         </p>
       </div>
-    </motion.div>
+    </m.div>
   );
 };
 
@@ -141,11 +141,11 @@ export const Timeline = () => {
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
 
         {/* Parallax Orbs behind everything */}
-        <motion.div
+        <m.div
           style={{ y: useTransform(scrollYProgress, [0, 1], [100, -200]) }}
           className="absolute top-[20%] left-[10%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-accent-violet/10 rounded-full blur-[120px] pointer-events-none z-0"
         />
-        <motion.div
+        <m.div
           style={{ y: useTransform(scrollYProgress, [0, 1], [-100, 300]) }}
           className="absolute bottom-[20%] right-[10%] w-[30vw] h-[30vw] max-w-[400px] max-h-[400px] bg-accent-blue/10 rounded-full blur-[100px] pointer-events-none z-0"
         />
@@ -178,7 +178,7 @@ export const Timeline = () => {
             viewBox="0 0 480 130"
           >
             {signaturePaths.map((path, idx) => (
-              <motion.path
+              <m.path
                 key={`fg-${idx}`}
                 d={path}
                 stroke="#8B5CF6"
@@ -200,12 +200,12 @@ export const Timeline = () => {
         </div>
 
         {/* Progress Indicator */}
-        <motion.div
+        <m.div
           style={{ opacity: useTransform(scrollYProgress, [0.9, 0.95], [1, 0]) }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
           <ScrollIndicator text="Scroll Timeline" />
-        </motion.div>
+        </m.div>
 
       </div>
     </section>

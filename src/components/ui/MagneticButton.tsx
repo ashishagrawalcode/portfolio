@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { HTMLMotionProps, motion } from "framer-motion";
+import { HTMLMotionProps, m } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface MagneticButtonProps extends HTMLMotionProps<"button"> {
@@ -29,7 +29,7 @@ export const MagneticButton = ({ children, className, ...props }: MagneticButton
   };
 
   return (
-    <motion.button
+    <m.button
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -48,6 +48,6 @@ export const MagneticButton = ({ children, className, ...props }: MagneticButton
       <span className="absolute inset-0 z-10 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 text-white transition-opacity duration-300">
         {children}
       </span>
-    </motion.button>
+    </m.button>
   );
 };

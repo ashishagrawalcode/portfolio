@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { GlassCard } from "../ui/GlassCard";
 
 const clubs = [
@@ -96,7 +96,7 @@ export const ClubsAndTeams = () => {
       <div className="max-w-[90rem] mx-auto px-6 md:px-12 relative z-10">
         <div className="mb-12 flex flex-col justify-between gap-3 md:mb-16 md:flex-row md:items-end">
           <div>
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -104,8 +104,8 @@ export const ClubsAndTeams = () => {
               className="mb-2 font-heading text-[10px] font-medium tracking-[0.3em] uppercase text-accent-violet"
             >
               Beyond Code
-            </motion.p>
-            <motion.h2
+            </m.p>
+            <m.h2
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -113,9 +113,9 @@ export const ClubsAndTeams = () => {
               className="font-display text-4xl font-semibold text-text-primary md:text-5xl lg:text-6xl"
             >
               Clubs &amp; Teams.
-            </motion.h2>
+            </m.h2>
           </div>
-          <motion.p
+          <m.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -123,12 +123,12 @@ export const ClubsAndTeams = () => {
             className="max-w-[200px] font-sans text-xs font-light leading-relaxed text-text-tertiary"
           >
             Roles held across university clubs and events.
-          </motion.p>
+          </m.p>
         </div>
 
         <div className="flex flex-col border-t border-white/10">
           {clubs.map((club, i) => (
-            <motion.div
+            <m.div
               key={club.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -174,7 +174,7 @@ export const ClubsAndTeams = () => {
                   {club.description}
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
